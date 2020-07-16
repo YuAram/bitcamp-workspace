@@ -27,8 +27,8 @@ class Exam0100 {
     // - 참 / 거짓
     System.out.println(true);
     System.out.println(false);
-
     // [문자]
+
     // 문자
     System.out.println('A');
     System.out.println('가');
