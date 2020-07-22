@@ -186,6 +186,11 @@ Mini-PMS를 이용하는 회원 정보를 출력한다. 일단 한 명의 정보
 - Eclipse IDE로 프로젝트 가져오기
   - bitcamp-java-project 임포트 
   - bitcamp-java-basic 임포트
+- 값을 메모리에 저장하는 방식
+  - com.eomcs.basic.ex03 패키지 예제
+  - 부동소수점을 저장하는 방법
+  - 문자를 저장하는 방법
+  - 논리 값을 저장하는 방법
 
 
 
