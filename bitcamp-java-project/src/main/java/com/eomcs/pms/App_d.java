@@ -1,6 +1,6 @@
 package com.eomcs.pms;
 
-// 클래스의 패키지 정보를 미리 선언하여 컴파일러에게 알려준다.
+// 클래스의 패키지 정보를 ㅁ리 선언하여 컴파일러에게 알려준다.
 import java.util.Scanner;
 import java.sql.Date;
 
@@ -11,13 +11,8 @@ import java.sql.Date;
 // - 배열을 사용하면 간단하게 여러 개의 변수를 선언할 수 있다.
 // 4) 반복문을 사용하여 여러 개의 값을 다루기
 // - 반복문을 사용하면 같은 코드를 중복해서 작성할 필요가 없다.
-// 5) 배열 개수를 변수에서 관리하기
-// - 변수의 값만 바꾸면 배열 개수를 바로 변경할 수 있어 편하다.
-// 6) 상수를 사용하여 초기 값을 변경하지 못하게 막기
-// - 변수는 중간에 값을 바꿀 수 있기 때문에 값을 바꾸기 말아야 하는 경우
-//   실수를 막기 위해 상수로 선언한다.
 
-public class App {
+public class App_d {
 
   public static void main(String[] args) {
     
@@ -25,18 +20,18 @@ public class App {
     
     System.out.println("[회원]");
     
-    final int MAX_LENGTH = 50;
-    int[] no = new int[MAX_LENGTH];
-    String[] name = new String[MAX_LENGTH];
-    String[] email = new String[MAX_LENGTH];
-    String[] password = new String[MAX_LENGTH];
-    String[] photo = new String[MAX_LENGTH];
-    String[] tel = new String[MAX_LENGTH];
-    Date[] now = new Date[MAX_LENGTH];
+    //최대 5명의 회원 정보를 입력 받는 변수를 선언 
+    int[] no = new int[5];
+    String[] name = new String[5];
+    String[] email = new String[5];
+    String[] password = new String[5];
+    String[] photo = new String[5];
+    String[] tel = new String[5];
+    Date[] now = new Date[5];
     long currentMillis = 0;
     int count = 0;
     
-    for (int i = 0; i < MAX_LENGTH; i++) {
+    for (int i = 0; i < 5; i++) {
       count++;
       System.out.print("번호? ");
       no[i] = keyInput.nextInt(); // nextInt()는 입력 값 중에서 숫자만 뽑아간다.

@@ -1,6 +1,6 @@
 package com.eomcs.pms;
 
-// 클래스의 패키지 정보를 미리 선언하여 컴파일러에게 알려준다.
+// 클래스의 패키지 정보를 ㅁ리 선언하여 컴파일러에게 알려준다.
 import java.util.Scanner;
 import java.sql.Date;
 
@@ -17,7 +17,7 @@ import java.sql.Date;
 // - 변수는 중간에 값을 바꿀 수 있기 때문에 값을 바꾸기 말아야 하는 경우
 //   실수를 막기 위해 상수로 선언한다.
 
-public class App {
+public class App_f {
 
   public static void main(String[] args) {
     

@@ -1,32 +1,89 @@
 package com.eomcs.pms;
 
+
+import java.util.Scanner;
+import java.sql.Date;
+
 public class App2 {
 
+  static class Project {
+    int no;
+    String name;
+    String contents;
+    Date startDate;
+    Date endDate;
+    String creator;
+    String teamMem;
+  }
+
+  static int count = 0;
+  static final int MAX_LENGTH = 50;
+  
+  static Project[] projects = new Project[MAX_LENGTH];
+
   public static void main(String[] args) {
-    System.out.print("[");
-    System.out.print("프로젝트");
-    System.out.println("]");
 
-    System.out.print("번호: ");
-    System.out.println(1201);
+    System.out.println("[프로젝트]");
 
-    System.out.print("프로젝트명: ");
-    System.out.println("미니 프로젝트 관리 시스템 개발");
+    inputMembers();
 
-    System.out.print("내용: ");
-    System.out.println("소규모 팀을 위한 프로젝트 관리 시스템을 개발한다.");
+    System.out.println("--------------------------------");
 
-    System.out.println("시작일: " + "2020-01-01");
+    outputMembers();
+  }
 
-    System.out.println("종료일: " + "2020-12-31");
-
-    System.out.println("만든이: " + "홍길동");
+  static void inputMembers() {
+    Scanner keyInput = new Scanner(System.in);
     
-    System.out.println("팀원: "
-        + "홍길동" + ","
-        + "김구" + ","
-        + "유관순" + ","
-        + "안중근" + ","
-        + "윤봉길");
+    for (int i = 0; i < MAX_LENGTH; i++) {
+      count++;
+      Project p = new Project();
+     
+      System.out.print("번호? ");
+      p.no = keyInput.nextInt();
+      keyInput.nextLine();
+
+      System.out.print("프로젝트명? ");
+      p.name = keyInput.nextLine();
+
+      System.out.print("내용? ");
+      p.contents = keyInput.nextLine();
+
+      System.out.print("시작일? ");
+      p.startDate = Date.valueOf(keyInput.nextLine());
+
+      System.out.print("종료일? ");
+      p.endDate = Date.valueOf(keyInput.nextLine());
+
+      System.out.print("만든이? ");
+      p.creator = keyInput.nextLine();
+
+      System.out.print("팀원? ");
+     p.teamMem = keyInput.nextLine();
+     
+     projects[i] = p;
+      
+     System.out.print("계속 입력하시겠습니까?(y/N) ");
+     String response = keyInput.nextLine();
+     
+     if(response.equalsIgnoreCase("y") == false) {
+       break; // 반복문 중지
+     } 
+    }
+    keyInput.close();
+  }
+
+  static void outputMembers() {
+    for(int i = 0; i < count; i++) {
+      Project p = projects[i];
+      System.out.printf("번호: %d\n", p.no);
+      System.out.printf("프로젝트명: %s\n", p.name);
+      System.out.printf("내용: %s\n", p.contents);
+      System.out.printf("시작일: %s\n", p.startDate.toString());
+      System.out.printf("종료일: %s\n", p.endDate.toString());
+      System.out.printf("만든이: %s\n", p.creator);
+      System.out.printf("팀원: %s\n", p.teamMem);
+      System.out.println();
+    }
   }
 }
