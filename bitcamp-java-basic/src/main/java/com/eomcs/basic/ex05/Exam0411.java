@@ -10,9 +10,9 @@ public class Exam0411 {
 
     // 음수를 왼쪽으로 이동할 때는 부호비트에 상관없이 무조건 이동
     int a = -0x7f_ff_ff_fa; // -21_4748_3642
-    System.out.println(a);
-    System.out.println(a << 1); // 1|0000 0000 0000 0000 0000 0000 0000 1100 = 12
-    System.out.println(a << 2);
+    System.out.println(a);      //     |1000 0000 0000 0000 0000 0000 0000 0110| = -21_4748_3642
+    System.out.println(a << 1); //    1|0000 0000 0000 0000 0000 0000 0000 110 | =  12
+    System.out.println(a << 2); //   10|0000 0000 0000 0000 0000 0000 0001 10  | =  24
     System.out.println(a << 3);
     System.out.println(a << 4);
 
