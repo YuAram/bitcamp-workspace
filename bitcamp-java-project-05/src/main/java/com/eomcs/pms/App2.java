@@ -16,18 +16,16 @@ public class App2 {
       String members;
     }
 
-    Scanner keyInput = new Scanner(System.in);
-
-    // 여러 개의 프로젝트 정보를 입력 받기 위해 변수 준비
     final int LENGTH = 100;
-    int count = 0;
-
     Project[] projects = new Project[LENGTH];
+
+    Scanner keyInput = new Scanner(System.in);
 
     System.out.println("[프로젝트]");
 
-    for (int i = 0; i < LENGTH; i++) {
+    int count = 0;
 
+    for (int i = 0; i < LENGTH; i++) {
       count ++;
 
       Project p = new Project();
@@ -53,12 +51,13 @@ public class App2 {
 
       System.out.print("팀원? ");
       p.members = keyInput.nextLine();
-
       System.out.println();
+
       projects[i] = p;
 
       System.out.print("계속 입력하시겠습니까?(y/N) ");
       String response = keyInput.nextLine();
+
       if (!response.equalsIgnoreCase("y"))
         break;
 
@@ -66,12 +65,10 @@ public class App2 {
     }
 
     keyInput.close();
-
     System.out.println("--------------------------------");
 
     for (int i = 0; i < count; i++) {
       Project p = projects[i];
-
       System.out.printf("%d, %s, %s, %s, %s\n",
           p.no,
           p.title,

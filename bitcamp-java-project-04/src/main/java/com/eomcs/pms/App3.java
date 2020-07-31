@@ -1,60 +1,55 @@
 package com.eomcs.pms;
 
 import java.sql.Date;
-import java.util.Scanner;
 
 public class App3 {
 
   public static void main(String[] args) {
-    class Task {
-      String project;
-      int numbers;
-      String contents;
-      Date dueDate;
-      int state;
-      String manager;
-    }
 
-    Scanner keyInput = new Scanner(System.in);
+    java.util.Scanner keyInput = new java.util.Scanner(System.in);
 
     final int LENGTH = 100;
-    Task[] tasks = new Task[LENGTH];
 
-    int count = 0;
+    String[] project = new String[LENGTH];
+    int[] numbers = new int[LENGTH];
+    String[] contents = new String[LENGTH];
+    Date[] dueDate = new Date[LENGTH];
+    int[] state = new int[LENGTH];
+    String[] manager = new String[LENGTH];
+    int count;
+
+    count = 0;
 
     System.out.println("[작업]");
 
     for(int i = 0; i < LENGTH; i++) {
       count++;
 
-      Task t = new Task();
-
       System.out.print("프로젝트? ");
-      t.project = keyInput.nextLine();
+      project[i] = keyInput.nextLine();
 
       System.out.print("번호? ");
-      t.numbers = keyInput.nextInt();
+      numbers[i] = keyInput.nextInt();
       keyInput.nextLine();
 
       System.out.print("내용? ");
-      t.contents = keyInput.nextLine();
+      contents[i] = keyInput.nextLine();
 
       System.out.print("완료일? ");
-      t.dueDate = Date.valueOf(keyInput.nextLine());
+      dueDate[i] = Date.valueOf(keyInput.nextLine());
 
       System.out.println("상태?");
       System.out.println("0: 신규 ");
       System.out.println("1: 진행중");
       System.out.println("2: 완료");
       System.out.print("> ");
-      t.state = keyInput.nextInt();
+      state[i] = keyInput.nextInt();
       keyInput.nextLine();
 
       System.out.print("담당자? ");
-      t.manager = keyInput.nextLine();
+      manager[i] = keyInput.nextLine();
 
       System.out.println();
-      tasks[i] = t;
 
       System.out.print("계속 입력 하시겠습니까?(y/N) ");
       String response = keyInput.nextLine();
@@ -68,13 +63,12 @@ public class App3 {
 
     for(int i = 0; i < count; i++) {
       String stateStr;
-      Task t = tasks[i];
 
-      System.out.printf("프로젝트: %s\n", t.project);
-      System.out.printf("번호: %s\n", t.numbers);
-      System.out.printf("내용: %s\n", t.contents);
-      System.out.printf("완료일: %s\n", t.dueDate);
-      switch(t.state) {
+      System.out.printf("프로젝트: %s\n", project[i]);
+      System.out.printf("번호: %s\n", numbers[i]);
+      System.out.printf("내용: %s\n", contents[i]);
+      System.out.printf("완료일: %s\n", dueDate[i]);
+      switch(state[i]) {
         case 0:
           stateStr = "신규";
           break;
@@ -86,7 +80,7 @@ public class App3 {
           break;
       }
       System.out.printf("상태: %s\n", stateStr);
-      System.out.printf("담당자: %s\n", t.manager);
+      System.out.printf("담당자: %s\n", manager[i]);
 
       System.out.println();
     }

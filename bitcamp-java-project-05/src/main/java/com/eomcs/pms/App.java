@@ -1,14 +1,21 @@
 package com.eomcs.pms;
 
 import java.sql.Date;
-// 클래스의 패키지 정보를 미리 선언하여 컴파일러에게 알려준다.
 import java.util.Scanner;
 
+// 1) 회원의 번호, 이름, 이메일, 암호, 사진, 전화번호, 등록일을 담을 수 있는
+//    메모리를 설계한다. => Member 클래스 정의
+// 2) Member 클래스의 레퍼런스 배열을 만들어 Member의 인스턴스를 보관한다.
+// 3) 레퍼런스 배열을 사용하여 인스턴스를 다루기 보다는
+//    낱개의 레퍼런스를 만들어 인스턴스를 다루는 것이 더 간결하다.
 
 public class App {
 
   public static void main(String[] args) {
 
+    // 값을 담기 위해 메모리를 준비할 때
+    // 어떤 종류의 메모리를 준비해야 하는지 설계도를 작성한다.
+    // => 이것을 "클래스 정의"라고 한다.
     class Member {
       int no;
       String name;
@@ -16,21 +23,22 @@ public class App {
       String password;
       String photo;
       String tel;
-      Date now;
+      Date createdDate;
     }
+
+    // Member 인스턴스의 주소를 담을 레퍼런스 배열을 준비한다.
+    final int LENGTH = 100;
+    Member[] members = new Member[LENGTH];
+
 
     Scanner keyInput = new Scanner(System.in);
 
     System.out.println("[회원]");
 
-    final int MAX_LENGTH = 50;
-
-    Member[] members = new Member[MAX_LENGTH];
-
     long currentMillis = 0;
     int count = 0;
 
-    for (int i = 0; i < MAX_LENGTH; i++) {
+    for (int i = 0; i < LENGTH; i++) {
       count++;
 
       Member m = new Member();
@@ -55,7 +63,7 @@ public class App {
       m.tel = keyInput.nextLine();
 
       currentMillis = System.currentTimeMillis(); // 1970-1-1 00:00:00에서 경과된 밀리초
-      m.now = new Date(currentMillis);
+      m.createdDate = new Date(currentMillis);
       System.out.println();
 
       members[i] = m;
@@ -69,8 +77,8 @@ public class App {
     }
 
     keyInput.close();
-
     System.out.println("--------------------------------");
+
     for(int i = 0; i < count; i++) {
       Member m = members[i];
       System.out.printf("%d, %s, %s, %s, %s\n",
@@ -78,8 +86,7 @@ public class App {
           m.name,
           m.email,
           m.tel,
-          m.now.
-          toString());
+          m.createdDate);
     }
   }
 }

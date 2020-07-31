@@ -1,28 +1,23 @@
 package com.eomcs.pms;
 
 import java.sql.Date;
-import java.util.Scanner;
 
 public class App2 {
 
   public static void main(String[] args) {
-    class Project {
-      int no;
-      String title;
-      String content;
-      Date startDate;
-      Date endDate;
-      String owner;
-      String members;
-    }
-
-    Scanner keyInput = new Scanner(System.in);
+    java.util.Scanner keyInput = new java.util.Scanner(System.in);
 
     // 여러 개의 프로젝트 정보를 입력 받기 위해 변수 준비
     final int LENGTH = 100;
-    int count = 0;
+    int[] no = new int[LENGTH];
+    String[] title = new String[LENGTH];
+    String[] content = new String[LENGTH];
+    Date[] startDate = new Date[LENGTH];
+    Date[] endDate = new Date[LENGTH];
+    String[] owner = new String[LENGTH];
+    String[] members = new String[LENGTH];
 
-    Project[] projects = new Project[LENGTH];
+    int count = 0;
 
     System.out.println("[프로젝트]");
 
@@ -30,32 +25,29 @@ public class App2 {
 
       count ++;
 
-      Project p = new Project();
-
       System.out.print("번호? ");
-      p.no = keyInput.nextInt();
+      no[i] = keyInput.nextInt();
       keyInput.nextLine();
 
       System.out.print("프로젝트명? ");
-      p.title = keyInput.nextLine();
+      title[i] = keyInput.nextLine();
 
       System.out.print("내용? ");
-      p.content = keyInput.nextLine();
+      content[i] = keyInput.nextLine();
 
       System.out.print("시작일? ");
-      p.startDate = Date.valueOf(keyInput.nextLine());
+      startDate[i] = Date.valueOf(keyInput.nextLine());
 
       System.out.print("종료일? ");
-      p.endDate = Date.valueOf(keyInput.nextLine());
+      endDate[i] = Date.valueOf(keyInput.nextLine());
 
       System.out.print("만든이? ");
-      p.owner = keyInput.nextLine();
+      owner[i] = keyInput.nextLine();
 
       System.out.print("팀원? ");
-      p.members = keyInput.nextLine();
+      members[i] = keyInput.nextLine();
 
       System.out.println();
-      projects[i] = p;
 
       System.out.print("계속 입력하시겠습니까?(y/N) ");
       String response = keyInput.nextLine();
@@ -65,19 +57,11 @@ public class App2 {
       System.out.println();
     }
 
-    keyInput.close();
-
     System.out.println("--------------------------------");
 
     for (int i = 0; i < count; i++) {
-      Project p = projects[i];
-
       System.out.printf("%d, %s, %s, %s, %s\n",
-          p.no,
-          p.title,
-          p.startDate,
-          p.endDate,
-          p.owner);
+          no[i], title[i], startDate[i], endDate[i], owner[i]);
     }
   }
 }

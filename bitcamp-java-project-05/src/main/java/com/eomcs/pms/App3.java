@@ -13,16 +13,17 @@ public class App3 {
       Date dueDate;
       int state;
       String manager;
+      int count;
     }
-
-    Scanner keyInput = new Scanner(System.in);
 
     final int LENGTH = 100;
     Task[] tasks = new Task[LENGTH];
 
-    int count = 0;
+    Scanner keyInput = new Scanner(System.in);
 
     System.out.println("[작업]");
+
+    int count = 0;
 
     for(int i = 0; i < LENGTH; i++) {
       count++;
@@ -52,28 +53,27 @@ public class App3 {
 
       System.out.print("담당자? ");
       t.manager = keyInput.nextLine();
-
       System.out.println();
+
       tasks[i] = t;
 
       System.out.print("계속 입력 하시겠습니까?(y/N) ");
       String response = keyInput.nextLine();
+
       if(!response.equalsIgnoreCase("y")) {
         break;
       }
+
       System.out.println();
     }
 
+    keyInput.close();
     System.out.println("--------------------------------");
 
     for(int i = 0; i < count; i++) {
-      String stateStr;
       Task t = tasks[i];
 
-      System.out.printf("프로젝트: %s\n", t.project);
-      System.out.printf("번호: %s\n", t.numbers);
-      System.out.printf("내용: %s\n", t.contents);
-      System.out.printf("완료일: %s\n", t.dueDate);
+      String stateStr;
       switch(t.state) {
         case 0:
           stateStr = "신규";
@@ -85,6 +85,11 @@ public class App3 {
           stateStr = "완료";
           break;
       }
+
+      System.out.printf("프로젝트: %s\n", t.project);
+      System.out.printf("번호: %s\n", t.numbers);
+      System.out.printf("내용: %s\n", t.contents);
+      System.out.printf("완료일: %s\n", t.dueDate);
       System.out.printf("상태: %s\n", stateStr);
       System.out.printf("담당자: %s\n", t.manager);
 
