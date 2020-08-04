@@ -1,32 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// function prototype
+void f1(int);
+void f2(int*);
+
+
 void main()
 {
-  int i[3];
-  i[0] = 100;
-  i[1] = 200;
-  i[2] = 300;
+  int a = 200;
   
-  printf("%d %d %d\n",i[0], i[1], i[2]);
+  f1(a);
+  printf("a = %d\n",a);
   
-  int *p;
-  
-  //p = &i[0];
-  p = i;
-  printf("%d\n",*(p+2));
-  
-  
-  int *p2 = (int*)malloc(sizeof(int) * 3);
-  
-  *(p2 + 0) = 110;
-  *(p2 + 1) = 220;
-  *(p2 + 2) = 330;
-  
-  printf("%d %d %d \n", *(p2 + 0), *(p2 + 1), *(p2 + 2));
-  printf("%d %d %d \n", p2[0], p2[1], p2[2]);
-  
-  printf("%d\n", *(p2 + 3));
-  
-  free(p2);
+  f2(&a);
+  printf("a = %d\n",a);
+}
+
+void f1(int a) {
+  a = 100;
+}
+
+void f2(int* p) {
+  *p = 100;
 }
