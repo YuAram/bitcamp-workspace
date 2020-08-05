@@ -16,6 +16,7 @@ public class Exam0240 {
     //  keyboard.nextLine(); // 남아 있는 빈 문자열의 한 줄(LF 코드)을 읽어서 버린다.
 
     System.out.print("이름? ");
+    keyboard.nextLine();
     String name = keyboard.nextLine();
 
     keyboard.close();
