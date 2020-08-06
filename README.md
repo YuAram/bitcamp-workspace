@@ -273,5 +273,14 @@ Mini-PMS를 이용하는 회원 정보를 출력한다. 일단 한 명의 정보
 - 콘솔 출력 및 키보드 입력 다루기
   - com.eomcs.basic.ex99 패키지 예제
   - Exam0110 ~ Exam0260 클래스
+- 클래스 문법의 용도 I
+  - com.eomcs.basic.ex02 패키지 예제
+  - Exam0210 ~ Exam0280 클래스
+
+### 19일차(2020-08-06,목)
+
+- 클래스 문법의 용도 II
+  - com.eomcs.basic.ex02 패키지 예제
+  - Exam0110 ~ Exam0130 클래스
 
     
