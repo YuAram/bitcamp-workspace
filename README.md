@@ -274,13 +274,33 @@ Mini-PMS를 이용하는 회원 정보를 출력한다. 일단 한 명의 정보
   - com.eomcs.basic.ex99 패키지 예제
   - Exam0110 ~ Exam0260 클래스
 - 클래스 문법의 용도 I
-  - com.eomcs.basic.ex02 패키지 예제
+  - com.eomcs.oop.ex02 패키지 예제
   - Exam0210 ~ Exam0280 클래스
 
 ### 19일차(2020-08-06,목)
 
 - 클래스 문법의 용도 II
-  - com.eomcs.basic.ex02 패키지 예제
+  - com.eomcs.oop.ex02 패키지 예제
   - Exam0110 ~ Exam0130 클래스
+
+- 클래스 사용법
+  - com.eomcs.oop.ex03 패키지 예제
+  - Exam0110 ~ Exam0430 클래스
+
+### 20일차(2020-08-07,금)
+
+- 클래스 사용법
+  - com.eomcs.oop.ex03 패키지 예제
+  - Exam0440 ~ Exam0970 클래스
+
+### 21일차(2020-08-10,월)
+
+- 인스턴스 메서드와 클래스 메서드의 활용 연습
+  - com.eomcs.oop.ex04 패키지 예제
+  - Exam0110 ~ Exam0250 클래스
+- 예제 프로젝트 수행(bitcamp-java-project)
+  - 07 버전 수행: 클래스를 이용하여 새 데이터 타입 정의하기
+    - App 변경
+
 
     
