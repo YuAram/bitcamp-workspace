@@ -1,4 +1,3 @@
-// 오버라이딩(overriding)
 package com.eomcs.oop.ex06.c;
 
 public class A {
