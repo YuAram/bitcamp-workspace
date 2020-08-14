@@ -12,7 +12,6 @@ public class Exam0120 {
     list.add("ddd"); // aaa, bbb, ccc, ddd,
 
     print(list);
-
     list.remove(2); // aaa, bbb, ddd,
     print(list);
 
@@ -32,7 +31,7 @@ public class Exam0120 {
     list.add(5, "ttt"); // zzz, bbb, yyy, xxx, ddd, ttt
     print(list);
 
-    list.set(1, "aaa"); // zzz, aaa, yyy, xxx, ddd
+    list.set(1, "aaa"); // zzz, aaa, yyy, xxx, ddd, ttt
     print(list);
 
     list.add("ccc"); // zzz, aaa, yyy, xxx, ddd, ttt, ccc
@@ -41,7 +40,6 @@ public class Exam0120 {
     list.add("eee"); // zzz, aaa, yyy, xxx, ddd, ttt, ccc, eee
     print(list);
   }
-
   static void print(ArrayList list) {
     for (int i = 0; i < list.size(); i++) {
       System.out.print(list.get(i) + ", ");
