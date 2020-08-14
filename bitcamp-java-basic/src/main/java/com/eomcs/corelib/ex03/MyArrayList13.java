@@ -24,7 +24,7 @@ package com.eomcs.corelib.ex03;
 // - 개별적으로 관리해야 할 데이터는 인스턴스 변수를 사용해야 한다.
 // 13) 캡슐화를 적용하여 공개할 멤버와 공개하지 않을 멤버를 구분한다.
 
-public class MyArrayList {
+public class MyArrayList13 {
   private Object[] elementData = new Object[5];
   private int size;
 

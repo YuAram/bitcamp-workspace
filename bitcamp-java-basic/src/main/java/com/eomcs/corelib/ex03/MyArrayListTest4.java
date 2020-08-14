@@ -1,9 +1,11 @@
 package com.eomcs.corelib.ex03;
 
-public class MyArrayListTest3 {
+import java.util.ArrayList;
+
+public class MyArrayListTest4 {
   public static void main(String[] args) {
     // aaa,bbb,ccc,ddd,eee
-    MyArrayList list1 = new MyArrayList();
+    ArrayList list1 = new ArrayList();
 
     list1.add("aaa");
     list1.add("bbb");
@@ -12,7 +14,7 @@ public class MyArrayListTest3 {
     list1.add("eee");
 
     // fff,ggg,hhh,iii
-    MyArrayList list2 = new MyArrayList();
+    ArrayList list2 = new ArrayList();
 
     list2.add("fff");
     list2.add("ggg");
@@ -26,7 +28,7 @@ public class MyArrayListTest3 {
 
   }
 
-  static void print(MyArrayList list) {
+  static void print(ArrayList list) {
     for (int i = 0; i < list.size(); i++)  {
       String str = (String) list.get(i);
       System.out.print(str + ",");
