@@ -18,6 +18,7 @@ import java.util.Arrays;
 //9) get(int)으로 유효하지 않은 인덱스의 값을 꺼낼 때 예외를 발생시킨다.
 //10) remove()를 수행한 다음에 맨 끝에 남아 있는 주소를 null로 설정하여
 //   인스턴스의 레퍼런스 카운트를 한 개 줄인다.
+00
 //11) set()을 호출할 때 인덱스가 유효하지 않으면 예외를 발생시킨다.
 //
 //테스트3 - MyArrayListTest3
@@ -33,17 +34,17 @@ import java.util.Arrays;
 //19) 배열의 특정 항목을 삭제할 때 배열 복사 기능을 이용하여 처리한다.
 //20) ArrayList에 보관되어 있는 인스턴스 목록을 배열로 리턴하는 toArray() 메서드를 추가한다.
 //21) toArray()에서 배열을 복사할 때 Arrays.copyOf() 메서드를 활용해보자.
-public class MyArrayList {
+public class MyArrayList21 {
 
   private static final int DEFAULT_CAPACITY = 5;
   private Object[] elementData;
   private int size;
 
-  public MyArrayList() {
+  public MyArrayList21() {
     elementData = new Object[DEFAULT_CAPACITY];
   }
 
-  public MyArrayList(int initialCapacity) {
+  public MyArrayList21(int initialCapacity) {
     if (initialCapacity < DEFAULT_CAPACITY) {
       elementData = new Object[DEFAULT_CAPACITY];
     } else {
