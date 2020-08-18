@@ -14,7 +14,7 @@ package com.eomcs.algorithm.data_structure.linkedlist;
 // 10) 인스턴스 필드에 대해 캡슐화를 적용한다.
 //     - 목록 크기를 리턴하는 size()를 추가로 정의한다.
 
-public class MyLinkedList {
+public class MyLinkedList10 {
 
   // 값을 찾을 때는 첫 번째 노드부터 따라간다.
   private Node first;

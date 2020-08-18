@@ -17,9 +17,9 @@ public class Exam0211 {
     Integer i4 = Integer.valueOf(127);
     System.out.println(i3 == i4); // true
 
-    Integer i3 = Integer.valueOf(-128);
-    Integer i4 = Integer.valueOf(-128);
-    System.out.println(i3 == i4); // true
+    // Integer i3 = Integer.valueOf(-128);
+    // Integer i4 = Integer.valueOf(-128);
+    // System.out.println(i3 == i4); // true
     // 이유?
     // -128 ~ 127 범위의 수는 자주 사용되는 수이기 때문이다.
 
