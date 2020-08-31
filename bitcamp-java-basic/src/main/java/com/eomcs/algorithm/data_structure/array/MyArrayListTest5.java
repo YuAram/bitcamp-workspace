@@ -1,12 +1,13 @@
 package com.eomcs.algorithm.data_structure.array;
 
 import java.util.ArrayList;
+import com.eomcs.corelib.ex03.MyArrayList;
 
-public class MyArrayListTest4 {
+public class MyArrayListTest5 {
 
   public static void main(String[] args) {
     // aaa,bbb,ccc,ddd,eee
-    ArrayList list1 = new ArrayList(100);
+    MyArrayList list1 = new MyArrayList(100);
     list1.add("aaa");
     list1.add("bbb");
     list1.add("ccc");
@@ -18,21 +19,6 @@ public class MyArrayListTest4 {
 
 
     System.out.println("------------------------");
-
-    // fff,ggg,hhh,iii
-    ArrayList list2 = new ArrayList();
-    list2.add("fff");
-    list2.add("ggg");
-    list2.add("hhh");
-    list2.add("iii");
-    list2.add("jjj");
-    list2.add("kkk");
-    list2.add("lll");
-    print(list2);
-
-
-
-
   }
 
   static void print(ArrayList list) {
