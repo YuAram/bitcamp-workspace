@@ -13,7 +13,7 @@ public class Exam0414 {
     float aver;
   }
 
-  public static void main(String[] args) throws Exception{
+  public static void main(String[] args) throws Exception {
     Score s = new Score();
 
     Score s2;
@@ -26,9 +26,15 @@ public class Exam0414 {
   // - Score 클래스의 인스턴스를 리턴
   // - Score의 인스턴스를 리턴
   // - Score 객체를 리턴
-
   static Score createObject() {
     Score s = new Score();
     return s;
   }
+
 }
+
+
+
+
+
+

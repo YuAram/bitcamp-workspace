@@ -24,7 +24,7 @@ public class Exam0143 {
     
     // 그럼 결과를 담을 변수의 크기를 늘리면 되는가?
     double r2 = f1 + f2;
-    System.out.println("? "+r2);
+    System.out.println(r2);
     // 기대값: 988.765411
     // 결과값: 988.765380859375
     // 기대한 결과가 나오지 않은 이유?

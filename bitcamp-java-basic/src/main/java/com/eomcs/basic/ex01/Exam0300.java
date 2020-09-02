@@ -1,5 +1,5 @@
 // Exam0300.java
-// subject : hangul and encoding
+// subject: hangul and encoding
 
 package com.eomcs.basic.ex01;
 

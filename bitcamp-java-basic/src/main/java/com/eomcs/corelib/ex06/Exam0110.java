@@ -26,7 +26,7 @@ public class Exam0110 {
     queue.offer(s5); // ccc, ddd, eee,
     print(queue);
 
-    System.out.println("------------------------------------");
+    System.out.println("------------------------");
 
     String value;
     while ((value = (String) queue.poll()) != null) {
@@ -34,9 +34,9 @@ public class Exam0110 {
     }
   }
 
-  static void print(ArrayBlockingQueue quque) {
-    Object[] arr = quque.toArray();
-    for (int i = 0; i < quque.size(); i++) {
+  static void print(ArrayBlockingQueue queue) {
+    Object[] arr = queue.toArray();
+    for (int i = 0; i < arr.length; i++) {
       System.out.print(arr[i] + ", ");
     }
     System.out.println();

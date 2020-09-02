@@ -2,14 +2,14 @@ package com.eomcs.basic.ex06;
 
 public class Exam0210 {
   public static void main(String[] args) {
-    final int DEVELOPER= 1;
+    final int DEVELOPER = 1;
     final int GENERAL_MANAGER = 2;
     final int BUILDING_MANAGER = 3;
 
-    int type = 1;
+    int type = GENERAL_MANAGER;
 
     if (type == DEVELOPER) {
-      System.out.println("정보처리기사");
+      System.out.println("정보처리자격증");
       System.out.println("졸업증명서");
       System.out.println("이력서");
     } else if (type == GENERAL_MANAGER) {
@@ -21,11 +21,11 @@ public class Exam0210 {
       System.out.println("잘못된 지원입니다.");
     }
 
-    System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+    System.out.println("----------------------");
 
     switch (type) {
       case DEVELOPER:
-        System.out.println("정보처리기사");
+        System.out.println("정보처리자격증");
       case GENERAL_MANAGER:
         System.out.println("졸업증명서");
       case BUILDING_MANAGER:
@@ -33,10 +33,9 @@ public class Exam0210 {
         break;
       default:
         System.out.println("잘못된 지원입니다.");
-        break;
     }
 
-    System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+    System.out.println("----------------------");
 
     int score = 70;
 
@@ -57,22 +56,22 @@ public class Exam0210 {
         System.out.println("F");
     }
 
-    System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+    System.out.println("----------------------");
 
     String value = "developer";
-    String value2 = "hello";
+    final String value2 = "developer2";
 
-    switch (value) { // 4 byte 이하 정수(byte, short, int, char), 문자
+    switch (value) { // 4byte 이하 정수(byte, short, int, char), 문자열
+      case value2:
+        break;
       case "developer":
         break;
       case "manager":
         break;
-      case "ok" + "doki":
+      case "ok" + "haha":
         break;
       default:
     }
-
-    System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
 
     int value3 = 100;
     final int x = 200;
@@ -87,7 +86,7 @@ public class Exam0210 {
         break;
     }
 
-    System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+    System.out.println("-------------------------");
 
     Job type2 = Job.DEV;
 
@@ -99,9 +98,18 @@ public class Exam0210 {
       case BM:
         break;
     }
+
+
   }
 
   enum Job {
     DEV, GM, BM
   }
 }
+
+
+
+
+
+
+

@@ -16,5 +16,6 @@ public class Exam0110 {
 
   static void printScore(String name, int kor, int eng, int math, int sum, float aver) {
     System.out.printf("%s: %d, %d, %d, %d, %.1f\n", name, kor, eng, math, sum, aver);
+
   }
 }

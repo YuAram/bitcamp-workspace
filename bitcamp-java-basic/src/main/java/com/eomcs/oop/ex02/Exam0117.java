@@ -6,8 +6,8 @@ public class Exam0117 {
 
   public static void main(String[] args) {
 
-    Score2 s1; // 스택에 변수 생
-    s1 = new Score2(); // 힙에 s1 인스턴스 생성
+    Score2 s1;
+    s1 = new Score2();
 
     s1.init("홍길동", 100, 90, 87);
     s1.compute();
@@ -17,13 +17,18 @@ public class Exam0117 {
     s2.compute();
 
     printScore(s1);
-    System.out.println("------------------------------");
+
+    System.out.println("--------------");
+
     printScore(s2);
   }
 
   static void printScore(Score2 s) {
     System.out.printf("%s: %d, %d, %d, %d, %.1f\n",
         s.name, s.kor, s.eng, s.math, s.sum, s.aver);
+
   }
 }
+
+
 

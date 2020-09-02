@@ -26,14 +26,15 @@ public class Exam0110 {
     stack.push(s5); // aaa, ddd, eee
     print(stack);
 
-    System.out.println("-------------------------");
+    System.out.println("-----------------");
+
     String value;
     try {
       while (true) {
         System.out.println(stack.pop());
       }
     } catch (Exception e) {
-      System.out.println("스택에서 더 이상 꺼낼 데이터가 없습니다.");
+      System.out.println("스택에서 더이상 꺼낼 데이터가 없습니다.");
     }
   }
 

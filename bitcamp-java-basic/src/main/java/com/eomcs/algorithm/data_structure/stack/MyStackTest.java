@@ -9,7 +9,6 @@ public class MyStackTest {
     System.out.println("==> " + stack.peek());
     stack.push("ddd");
     stack.push("eee");
-
     print(stack);
 
     System.out.println(stack.pop());
@@ -18,13 +17,13 @@ public class MyStackTest {
     System.out.println(stack.pop());
     System.out.println(stack.pop());
     System.out.println(stack.pop());
-    //System.out.println(stack.pop());
-    //System.out.println(stack.pop());
+    System.out.println(stack.pop());
+    System.out.println(stack.pop());
   }
 
   static void print(MyStack stack) {
     for (int i = 0; i < stack.size(); i++) {
-      System.out.print(stack.get(i) + ", ");
+      System.out.print(stack.get(i) + ",");
     }
     System.out.println();
   }

@@ -16,10 +16,11 @@ public class Exam0211 {
     Integer i3 = Integer.valueOf(127);
     Integer i4 = Integer.valueOf(127);
     System.out.println(i3 == i4); // true
+    System.out.println(i1 == i3); // false
 
-    // Integer i3 = Integer.valueOf(-128);
-    // Integer i4 = Integer.valueOf(-128);
-    // System.out.println(i3 == i4); // true
+    Integer x = Integer.valueOf(-128);
+    Integer y = Integer.valueOf(-128);
+    System.out.println(x == y); // true
     // 이유?
     // -128 ~ 127 범위의 수는 자주 사용되는 수이기 때문이다.
 
@@ -29,8 +30,8 @@ public class Exam0211 {
     //    오히려 메모리 낭비가 심해지기 때문이다.
     // => 상수풀에 생성된 객체는 JVM이 종료되기 전까지 유지된다.
     //    가비지가 되지 않는다.
-    // => 그러나 Heap에 생성된 객체는 주소를 잃어 버리면 가비지가 되기 때문에
-    //    메모리를 좀 더 효율적으로 효과적으로 사용할 수 있다.
+    // => 그러나 heap에 생성된 객체는 주소를 잃어 버리면 가비지가 되기 때문에
+    //    메모리를 좀 더 효율적으로 사용할 수 있다.
     Integer i5 = Integer.valueOf(128);
     Integer i6 = Integer.valueOf(128);
     System.out.println(i5 == i6); // false

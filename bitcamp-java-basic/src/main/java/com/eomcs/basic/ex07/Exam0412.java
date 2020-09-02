@@ -16,10 +16,16 @@ public class Exam0412 {
 
   static int[] m1(int size) {
     int[] arr = new int[size];
-
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < arr.length; i++) {
       arr[i] = 100 + i;
     }
     return arr;
   }
+
 }
+
+
+
+
+
+

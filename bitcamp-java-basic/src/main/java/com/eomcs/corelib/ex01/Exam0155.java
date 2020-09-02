@@ -19,6 +19,7 @@ public class Exam0155 {
     map.put(k3, new Student("유관순", 17, true));
     map.put(k4, new Student("안중근", 24, true));
     map.put(k5, new Student("윤봉길", 22, false));
+    
     // k3 key로 저장한 값을 다시 k3 key로 꺼내보자!
     System.out.println(map.get(k3));
     
@@ -39,7 +40,6 @@ public class Exam0155 {
     // 즉 k3와 k6는 서로 다른 인스턴스 이지만, 
     // hashCode()의 리턴 값이 같고, equals()의 리턴 값이 true이기 때문에 
     // 두 객체는 같은 key로 간주한다.
-    System.out.println(">>>>>>>>>>>>>");
     // 그래서 k3로 저장된 값을 k6로 꺼낼 수 있다.
     System.out.println(map.get(k6));
     

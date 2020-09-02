@@ -6,17 +6,25 @@ import java.util.ArrayList;
 //
 public class Exam0413 {
 
-  public static void main(String[] args) throws Exception{
+  public static void main(String[] args) throws Exception {
     ArrayList list = new ArrayList();
 
     while (true) {
       list.add(createArray());
       Thread.currentThread().sleep(2000);
     }
+
   }
 
   static int[] createArray() {
-    System.out.println(".");
-    return new int[40_000_000];
+    System.out.print(".");
+    return new int[10_000_000];
   }
+
 }
+
+
+
+
+
+

@@ -22,13 +22,7 @@ public class Exam0141 {
     r = (float)i / (float)j; // float / float = float
     // i / j의 값은 2.5가 되고
     // r에 저장되는 것은 2.5이다.
-    System.out.println(r);    
-    
-    r = (float)i / j; // float / int = float
-    System.out.println(r); 
-    
-    r = i / (float)j; // int / float = float
-    System.out.println(r); 
+    System.out.println(r);                         
   }
 }
 

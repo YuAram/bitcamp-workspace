@@ -13,8 +13,8 @@ public class Exam0111 {
 
   public static void main(String[] args) {
 
-    Score s1; // 스택에 변수 생성
-    s1= new Score(); // 힙에 s1 인스턴스 생성
+    Score s1;
+    s1 = new Score();
 
     s1.name = "홍길동";
     s1.kor = 100;
@@ -29,5 +29,9 @@ public class Exam0111 {
   static void printScore(Score s) {
     System.out.printf("%s: %d, %d, %d, %d, %.1f\n",
         s.name, s.kor, s.eng, s.math, s.sum, s.aver);
+
   }
 }
+
+
+

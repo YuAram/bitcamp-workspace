@@ -32,12 +32,18 @@ public class Exam0112 {
     s2.aver = s2.sum / 3f;
 
     printScore(s1);
-    System.out.println("------------------------------");
+
+    System.out.println("--------------");
+
     printScore(s2);
   }
 
   static void printScore(Score s) {
     System.out.printf("%s: %d, %d, %d, %d, %.1f\n",
         s.name, s.kor, s.eng, s.math, s.sum, s.aver);
+
   }
 }
+
+
+

@@ -11,14 +11,12 @@ public class Exam0250 {
 
     // 한 개의 토큰을 읽을 때 유용하다.
     String name = keyboard.next();
-    String name2 = keyboard.next();
-    String name3 = keyboard.next();
 
     boolean working = keyboard.nextBoolean();
 
     keyboard.close();
 
-    System.out.printf("%d, %s, %s, %s, %b\n", age, name, name2, name3, working);
+    System.out.printf("%d, %s, %b\n", age, name, working);
   }
 }
 

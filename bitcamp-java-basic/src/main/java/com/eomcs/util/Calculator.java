@@ -1,6 +1,7 @@
 package com.eomcs.util;
 
 public class Calculator {
+
   public int result = 0;
 
   public void plus(int value) {
@@ -19,4 +20,3 @@ public class Calculator {
     this.result /= value;
   }
 }
-

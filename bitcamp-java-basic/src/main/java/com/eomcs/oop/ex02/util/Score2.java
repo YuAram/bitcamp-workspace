@@ -20,3 +20,9 @@ public class Score2 {
     this.math = math;
   }
 }
+
+
+
+
+
+

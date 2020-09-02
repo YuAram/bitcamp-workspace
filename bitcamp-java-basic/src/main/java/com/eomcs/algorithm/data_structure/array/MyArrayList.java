@@ -1,5 +1,6 @@
 package com.eomcs.algorithm.data_structure.array;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 //테스트1 - MyArrayListTest
@@ -35,6 +36,7 @@ import java.util.Arrays;
 //21) toArray()에서 배열을 복사할 때 Arrays.copyOf() 메서드를 활용해보자.
 //22) 제네릭 적용
 //23) 파라미터로 받은 배열에 값을 채워주는 toArray(E[]) 메서드를 추가한다.
+//24) 항목의 개수보다 작은 크기의 배열을 전달할 때, 자동으로 새 배열을 만들도록 toArray(E[])를 변경한다.
 public class MyArrayList<E> {
 
   private static final int DEFAULT_CAPACITY = 5;
@@ -151,9 +153,15 @@ public class MyArrayList<E> {
   
   @SuppressWarnings("unchecked")
   public E[] toArray(E[] arr) {
-    for (int i = 0; i < this.size; i++) {
-      arr[i] = (E) this.elementData[i];
+    if (arr.length < size) {
+      arr = (E[]) Array.newInstance(arr.getClass().getComponentType(), this.size);
     }
+    System.arraycopy(
+        this.elementData, 
+        0, 
+        arr, 
+        0,
+        this.size);
     return arr;
   }
 }
