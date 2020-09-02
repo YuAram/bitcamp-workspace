@@ -1,6 +1,5 @@
-package com.eomcs.algorithm.data_structure.queue;
+package com.eomcs.util;
 
-import com.eomcs.algorithm.data_structure.linkedlist.MyLinkedList;
 
 // 1) Queue 를 구현하기 위해 기존에 작성한 MyLinkedList를 상속 받는다.
 // 2) Queue에 값을 추가하는 offer(Object)를 정의한다.
@@ -8,7 +7,7 @@ import com.eomcs.algorithm.data_structure.linkedlist.MyLinkedList;
 // 4) Queue에서 제일 앞에 있는 값을 조회하는 peek()을 정의한다.
 // 5) Queue.clone() 오버라이딩 : deep copy
 // 6) 제네릭 적용
-public class MyQueue<E> extends MyLinkedList<E> implements Cloneable{
+public class Queue<E> extends LinkedList<E> implements Cloneable{
 
   public boolean offer(E e) {
     return add(e);
@@ -30,8 +29,8 @@ public class MyQueue<E> extends MyLinkedList<E> implements Cloneable{
   
   @SuppressWarnings("unchecked")
   @Override
-  public MyQueue<E> clone() throws CloneNotSupportedException {
-    MyQueue<E> newQueue = new MyQueue<>();
+  public Queue<E> clone() throws CloneNotSupportedException {
+    Queue<E> newQueue = new Queue<>();
     Object[] values = this.toArray();
     for (Object value : values) {
       newQueue.offer((E) value);

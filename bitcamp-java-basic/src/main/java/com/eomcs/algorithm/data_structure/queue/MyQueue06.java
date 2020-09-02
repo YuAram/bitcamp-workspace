@@ -8,7 +8,7 @@ import com.eomcs.algorithm.data_structure.linkedlist.MyLinkedList;
 // 4) Queue에서 제일 앞에 있는 값을 조회하는 peek()을 정의한다.
 // 5) Queue.clone() 오버라이딩 : deep copy
 // 6) 제네릭 적용
-public class MyQueue<E> extends MyLinkedList<E> implements Cloneable{
+public class MyQueue06<E> extends MyLinkedList<E> implements Cloneable{
 
   public boolean offer(E e) {
     return add(e);
@@ -30,8 +30,8 @@ public class MyQueue<E> extends MyLinkedList<E> implements Cloneable{
   
   @SuppressWarnings("unchecked")
   @Override
-  public MyQueue<E> clone() throws CloneNotSupportedException {
-    MyQueue<E> newQueue = new MyQueue<>();
+  public MyQueue06<E> clone() throws CloneNotSupportedException {
+    MyQueue06<E> newQueue = new MyQueue06<>();
     Object[] values = this.toArray();
     for (Object value : values) {
       newQueue.offer((E) value);

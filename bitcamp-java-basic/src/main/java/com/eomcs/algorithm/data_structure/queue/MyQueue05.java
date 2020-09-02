@@ -7,34 +7,32 @@ import com.eomcs.algorithm.data_structure.linkedlist.MyLinkedList;
 // 3) Queue에서 값을 꺼내는 poll()을 정의한다.
 // 4) Queue에서 제일 앞에 있는 값을 조회하는 peek()을 정의한다.
 // 5) Queue.clone() 오버라이딩 : deep copy
-// 6) 제네릭 적용
-public class MyQueue<E> extends MyLinkedList<E> implements Cloneable{
+public class MyQueue05 extends MyLinkedList implements Cloneable{
 
-  public boolean offer(E e) {
+  public boolean offer(Object e) {
     return add(e);
   }
 
-  public E poll() {
+  public Object poll() {
     if (size() == 0) {
       return null;
     }
     return remove(0);
   }
 
-  public E peek() {
+  public Object peek() {
     if (size() == 0) {
       return null;
     }
     return get(0);
   }
   
-  @SuppressWarnings("unchecked")
   @Override
-  public MyQueue<E> clone() throws CloneNotSupportedException {
-    MyQueue<E> newQueue = new MyQueue<>();
+  public MyQueue05 clone() throws CloneNotSupportedException {
+    MyQueue05 newQueue = new MyQueue05();
     Object[] values = this.toArray();
     for (Object value : values) {
-      newQueue.offer((E) value);
+      newQueue.offer(value);
     }
     return newQueue;
   }

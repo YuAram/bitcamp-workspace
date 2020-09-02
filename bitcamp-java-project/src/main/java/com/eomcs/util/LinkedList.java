@@ -1,28 +1,8 @@
-package com.eomcs.algorithm.data_structure.linkedlist;
+package com.eomcs.util;
 
 import java.lang.reflect.Array;
 
-// 1) LinkedList 클래스 정의
-// 2) 값을 담을 노드 클래스를 설계한다.
-// 3) 첫 번째 노드와 마지막 노드의 주소를 담을 필드를 추가한다.
-//    목록 크기를 저장할 필드를 추가한다.
-// 4) 목록에 값을 추가하는 add() 메서드를 정의한다.
-// 5) 목록에서 값을 조회하는 get() 메서드를 정의한다.
-// 6) 목록에서 특정 인덱스 위치에 값을 삽입하는 add(int, Object) 메서드를 정의한다.
-//    - Node의 생성자를 추가한다.
-// 7) 목록에서 특정 인덱스에 값을 제거하는 remove(int) 메서드를 정의한다.
-// 8) 목록에서 특정 인덱스의 값을 바꾸는 set(int, Object) 메서드를 정의한다.
-// 9) 목록의 데이터를 새 배열에 담아 리턴하는 toArray() 메서드를 정의한다.
-// 10) 인스턴스 필드에 대해 캡슐화를 적용한다.
-//    - 목록 크기를 리턴하는 size()를 추가로 정의한다.
-//
-// 테스트2: MyLinkedListTest2
-// 11) 제네릭을 적용한다.
-//
-// 테스트3: MyLinkedListTest3
-// 12) 파라미터로 받은 배열에 값을 채워주는 toArray(E[]) 메서드를 추가한다.
-//
-public class MyLinkedList<E> {
+public class LinkedList<E> {
 
   // 값을 찾을 때는 첫 번째 노드부터 따라간다.
   private Node<E> first;
@@ -48,7 +28,6 @@ public class MyLinkedList<E> {
       this.value = value;
     }
   }
-
 
   public boolean add(E e) {
     Node<E> node = new Node<>();
@@ -172,26 +151,35 @@ public class MyLinkedList<E> {
 
   @SuppressWarnings("unchecked")
   public E[] toArray(E[] arr) {
-    if (arr.length < this.size()) {
-      // => 다음과 같이 배열의 타입을 엄격히 형변환 해도 된다.
-      Class<E[]> arrayClassInfo = (Class<E[]>)arr.getClass();
-      Class<E> arrayItemClassInfo = (Class<E>)arrayClassInfo.getComponentType();
 
-      // => 그러나 조회 용으로 사용할 거라면 굳이 리턴 값에 대해 제네릭 형변환을 엄격히 할 필요가 없다.
-      //Class<?> arrayClassInfo = arr.getClass();
-      //Class<?> arrayItemClassInfo = arrayClassInfo.getComponentType();
-
-      arr = (E[]) Array.newInstance(arrayItemClassInfo, this.size());
-
-      // => 그냥 다음과 같이 간략하게 표현하는 것이 코드를 읽기 쉽게 한다.
-      //arr = (E[]) Array.newInstance(arr.getClass().getComponentType(), this.size());
+    if (arr.length < size) {
+      arr = (E[]) Array.newInstance(arr.getClass().getComponentType(), size);
     }
 
-    Object[] originArr = this.toArray();
-    for (int i = 0; i < this.size(); i++) {
-      arr[i] = (E) originArr[i];
+    Node<E> cursor = first;
+    for (int i = 0; i < size; i++) {
+      arr[i] = cursor.value;
+      cursor = cursor.next;
     }
+
     return arr;
+  }
+
+
+  // Object.clone()을 오버라이딩 할 때 'deep copy' 이용하여 스택 객체 복사하기
+  // => 새 연결 리스트를 만들어 원본에 보관된 값을 복사한다.
+  // => 따라서 복사본의 Node 객체는 원본의 Node 객체와 다르다. 
+  //    복사본의 상태 변경에 원본은 영향 받지 않는다.
+  //
+  @SuppressWarnings("unchecked")
+  @Override
+  public LinkedList<E> clone() throws CloneNotSupportedException {
+    LinkedList<E> newList = new LinkedList<>();
+    Object[] values = this.toArray();
+    for (Object value : values) {
+      newList.add((E) value);
+    }
+    return newList;
   }
 }
 
