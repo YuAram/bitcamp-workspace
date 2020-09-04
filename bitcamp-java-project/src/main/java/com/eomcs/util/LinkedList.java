@@ -2,22 +2,17 @@ package com.eomcs.util;
 
 import java.lang.reflect.Array;
 
-public class LinkedList<E> {
+// List 를 상속 받기 때문에 
+// - size 필드는 제거한다.
+// - size() 메서드는 제거한다.
+// - 상속 받은 메서드를 구현한다.
+//
+public class LinkedList<E> extends AbstractList<E> {
 
-  // 값을 찾을 때는 첫 번째 노드부터 따라간다.
   private Node<E> first;
 
-  // 값을 추가할 때는 마지막 노드에 연결한다.
   private Node<E> last;
 
-  // 목록 크기를 보관한다.
-  private int size;
-
-  // 용도?
-  // - Node 클래스는 목록에서 각 항목의 값을 보관하는 객체로 역할을 수행한다.
-  // 스태틱 클래스?
-  // - 여러 개의 MyLinkedList 객체가 공유하는 클래스이므로
-  //   스태틱으로 Node 클래스를 설계한다.
   static class Node<E> {
     E value;
     Node<E> next;
@@ -29,6 +24,7 @@ public class LinkedList<E> {
     }
   }
 
+  @Override
   public boolean add(E e) {
     Node<E> node = new Node<>();
     node.value = e;
@@ -45,6 +41,7 @@ public class LinkedList<E> {
     return true;
   }
 
+  @Override
   public E get(int index) {
     if (index < 0 || index >= this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -57,6 +54,7 @@ public class LinkedList<E> {
     return cursor.value;
   }
 
+  @Override
   public void add(int index, E element) {
     if (index < 0 || index > this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -85,6 +83,7 @@ public class LinkedList<E> {
     }
   }
 
+  @Override
   public E remove(int index) {
     if (index < 0 || index >= this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -115,6 +114,7 @@ public class LinkedList<E> {
     return old.value;
   }
 
+  @Override
   public E set(int index, E element) {
     if (index < 0 || index >= this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -131,6 +131,7 @@ public class LinkedList<E> {
     return old;
   }
 
+  @Override
   public Object[] toArray() {
     Object[] arr = new Object[this.size];
 
@@ -145,10 +146,7 @@ public class LinkedList<E> {
     return arr;
   }
 
-  public int size() {
-    return this.size;
-  }
-
+  @Override
   @SuppressWarnings("unchecked")
   public E[] toArray(E[] arr) {
 
@@ -164,7 +162,6 @@ public class LinkedList<E> {
 
     return arr;
   }
-
 
   // Object.clone()을 오버라이딩 할 때 'deep copy' 이용하여 스택 객체 복사하기
   // => 새 연결 리스트를 만들어 원본에 보관된 값을 복사한다.
