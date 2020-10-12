@@ -1,79 +1,115 @@
-# 24 - 인터페이스를 활용한 객체 사용 규칙 정의
+# 33. `Observer` 디자인 패턴을 적용하여 클래스 구조를 변경
 
-**인터페이스** 는 
+이번 훈련에서는,
+- **Observer 디자인 패턴** 을 프로젝트에 적용하는 것을 연습할 것이다.
 
-- 객체 간의 사용 규칙을 정의할 때 사용하는 문법이다.
-- 즉 호출할 때 어떤 이름의 메서드를 어떤 파라미터로 호출해야 하는 지 정의한 것이다.
-- 구체적인 동작은 클래스가 구현한다.
-- 호출자와 피호출자 간의 직접적인 종속성을 제거할 수 있어 유지보수에 좋다. 
-
-**인터페이스* 에 대한 **추상 클래스** 의 활용
-
-- 인터페이스에 정의된 규칙이 많을 경우, 그 많은 메서드를 직접 구현하는 일은 번거롭다.
-- 그래서 **추상 클래스** 를 통해 일부 메서드를 구현하고,
-  나머지는 서브 클래스에게 맡기는 프로그래밍 기법을 많이 사용한다. 
-
-이번 훈련에서는 **인터페이스** 를 활용하여 객체 사용 규칙을 정의하는 것과,
-**추상 클래스** 를 활용하여 인터페이스의 일부 구현을 처리하는 방법을 연습할 것이다.
-**인터페이스** 와 **추상 클래스** 의 *콜라보(collaboration)*를 경험해보자.
+**Observer 디자인 패턴**은,
+- 특정 객체의 상태 변화에 따라 수행해야 하는 작업이 있을 경우,
+  기존 코드를 손대지 않고 손쉽게 기능을 추가하거나 제거할 수 있는 설계 기법이다.
+- **발행(publish)/구독(subscribe) 모델** 이라고 부르기도 한다.
+- 발행 측(publisher)에서는 구독 객체(subscriber)의 목록을 유지할 컬렉션을 가지고 있다.
+- 또한 구독 객체를 등록하거나 제거하는 메서드가 있다.
+- 구독 객체를 **리스너(listener)** 또는 **관찰자(observer)** 라 부르기도 한다.
 
 ## 훈련 목표
-
-- **인터페이스** 의 용도와 특징을 이해한다.
-- **인터페이스** 를 정의하고 활용하는 방법을 연습한다.
-- **추상 클래스** 를 통해 인터페이스의 구현을 보조하는 방법을 배운다.
-
+- `Observer` 디자인 패턴의 용도와 이점을 이해한다.
+- Observer 디자인 패턴으로 구조를 바꾸는 것을 연습한다.
 
 ## 훈련 내용
+- 인터페이스를 활용하여 옵저버 호출 규칙을 정의한다.
+- 옵저버 구현체를 등록하고 제거하는 메서드와 컬렉션을 추가한다.
+- 특정 상태가 되면 옵저버에게 통지하게 한다.
 
-- 데이터 목록을 다루는 객체의 사용 규칙을 `List` 인터페이스로 정의한다.
-- `AbstractList` 추상 클래스가 `List` 인터페이스를 구현한다.
-- XxxHandler에서 데이터 목록을 가리키는 의존 객체를 지정할 때 클래스 대신 인터페이스를 사용한다.
 
 ## 실습
 
-### 1단계 - 데이터 목록을 다루는 객체의 사용 규칙을 인터페이스로 정의한다.
+### 1단계 - App 클래스의 스태틱 멤버(필드와 메서드)를 인스턴스 멤버로 전환한다.
 
-- `List` 인터페이스
-  - `java.util.List` 인터페이스를 모방하여 데이터 목록 객체의 사용 규칙을 정의한다. 
-
-#### 작업 파일
-
-- com.eomcs.util.List 인터페이스 생성
-
-
-### 2단계 - `List` 인터페이스를  구현하도록 `AbstractList` 를 변경한다.
-
-- `AbstractList` 추상 클래스
-  - `List` 인터페이스를 구현한다.
-  - 서브 클래스에서 공통으로 구현해야 할 필드나 메서드를 정의한다.
-  - 서브 클래스에서 정의해야 할 메서드는 제외한다.
+- `App` 클래스 변경
+  - 스태틱 필드와 스태틱 메서드를 인스턴스 필드와 인스턴스 메서드로 전환한다.
+  - 보통 실무에서는 클래스의 일반적인 구조로 인스턴스 필드와 메서드를 사용한다.
 
 #### 작업 파일
+- com.eomcs.pms.App 변경
+  - 백업: App01.java
 
-- com.eomcs.util.AbstractList 변경
 
-### 3단계 - XxxHandler 에서 의존하는 데이터 목록 객체의 타입을 인터페이스로 변경한다.
+### 2단계 - 애플리케이션을 시작하거나 종료할 때 실행할 옵저버의 메서드 호출 규칙을 정의한다.
 
-- `BoardHandler`, `MemberHandler`, `ProjectHandler`, `TaskHandler` 클래스
-  - 기존의 `AbstractList` 인스턴스 필드를 `List` 타입으로 변경한다.
-- `App` 클래스
-  - `ArrayList` 나 `LinkedList` 를 담은 레퍼런스 필드의 타입을 `List` 로 변경한다.
-  
+- `ApplicationContextListener` 인터페이스 생성
+  - Observer가 갖춰야 할 규칙을 정의한다.
+  - 애플리케이션이 시작할 때 자동으로 호출할 메서드의 규칙을 정의한다.
+  - 애플리케이션을 종료하기 전에 자동으로 호출할 메서드의 규칙을 정의한다.
+
 #### 작업 파일
+- com.eomcs.context.ApplicationContextListener 생성
 
-- com.eomcs.pms.handler.BoardHandler 클래스 변경
-- com.eomcs.pms.handler.MemberHandler 클래스 변경
-- com.eomcs.pms.handler.ProjectHandler 클래스 변경
-- com.eomcs.pms.handler.TaskHandler 클래스 변경
-- com.eomcs.pms.App 클래스 변경
+
+
+### 3단계 - 옵저버를 저장할 컬렉션 객체와 옵저버를 추가하고 제거하는 메서드를 추가한다.
+
+- `App` 클래스 변경
+  - 옵저버를 보관할 컬렉션 객체를 추가한다.
+  - 옵저버를 등록하는 메서드(`addApplicationContextListener()`)를 추가한다.
+  - 옵저버를 제거하는 메서드(`removeApplicationContextListener()`)를 추가한다.
+
+#### 작업 파일
+- com.eomcs.pms.App 변경
+  - 백업: App02.java
+
+### 4단계 - 애플리케이션의 service() 실행 전/후에 옵저버에게 통지하는 코드를 추가한다.
+
+- `App` 클래스 변경
+  - 옵저버를 호출하는 메서드를 정의한다.
+    - notifyApplicationContextListenerOnServiceStarted()
+    - notifyApplicationContextListenerOnServiceStopped()
+  - service() 메서드의 시작/종료 부분에 옵저버를 호출하는 메서드를 실행한다.
+
+#### 작업 파일
+- com.eomcs.pms.App 변경
+  - 백업: App03.java
+
+
+### 5단계 - 애플리케이션을 시작하고 종료할 때 간단한 안내 메시지를 출력하는 옵저버를 추가한다. 
+
+이번 단계에서는 옵저버 디자인 패턴을 적용한 후 그 사용법을 간단히 실험한다.
+
+- AppInitListener 생성
+  - ApplicationContextListener를 구현한다.
+  - 애플리케이션을 시작할 때 다음과 같이 간단한 안내 메시지를 출력한다.
+    - "프로젝트 관리 시스템(PMS)에 오신 걸 환영합니다!"
+  - 애플리케이션을 종료할 때 다음과 같이 간단한 안내 메시지를 출력한다.
+    - "프로젝트 관리 시스템(PMS)을 종료합니다!"
+- App 변경
+  - service() 호출 전에 옵저버를 등록한다.
+
+#### 작업 파일
+- com.eomcs.pms.listener.AppInitListener 클래스 생성
+- com.eomcs.pms.App 변경
+  - 백업: App04.java
+
+
+
+
+
+  - 애플리케이션을 시작할 때 옵저버를 호출한다.
+  - 애플리케이션을 종료할 때 옵저버를 호출한다.
+
+
+
+
+### 4단계 - `Arrays.asList()` 를 사용하여 배열을 데이터 목록에 바로 추가한다.
+
+- App 변경
+  - loadObjects() 메서드를 변경한다.
+  - `Arrays.asList()` 를 사용하면 배열을 `List` 구현체로 만들 수 있다.
+  - `List.addAll()` 을 이용하면 `List` 객체를 통째로 추가할 수 있다.
+  - 반복문을 사용하는 것 보다 간결하다.
+
+#### 작업 파일
+- com.eomcs.pms.App 변경
+
 
 ## 실습 결과
-
-- src/main/java/com/eomcs/util/List.java 변경
-- src/main/java/com/eomcs/util/AbstractList.java 변경
-- src/main/java/com/eomcs/pms/handler/BoardHandler.java 변경
-- src/main/java/com/eomcs/pms/handler/MemberHandler.java 변경
-- src/main/java/com/eomcs/pms/handler/ProjectHandler.java 변경
-- src/main/java/com/eomcs/pms/handler/TaskHandler.java 변경
+- build.gradle 변경
 - src/main/java/com/eomcs/pms/App.java 변경
