@@ -7,10 +7,10 @@ import java.util.Scanner;
 public class Exam0210 {
 
   static class MyThread extends Thread {
-    ThreadPool pool;
+    MyThreadPool pool;
     int count;
 
-    public MyThread(String name, ThreadPool pool) {
+    public MyThread(String name, MyThreadPool pool) {
       super(name);
       this.pool = pool;
     }
@@ -52,30 +52,32 @@ public class Exam0210 {
     void add(Thread obj);
   }
 
-  static class MyThreadPool implements ThreadPool {
+  static class MyThreadPool implements ThreadPool{
     ArrayList<MyThread> list = new ArrayList<>();
 
     public MyThreadPool() {
+
       MyThread t1 = new MyThread("1번 스레드=>", this);
-      t1.start();
-      list.add(t1);
-
       MyThread t2 = new MyThread("2번 스레드***>", this);
-      t2.start();
-      list.add(t2);
-
       MyThread t3 = new MyThread("3번 스레드-->", this);
-      t3.start();
+
+      list.add(t1);
+      list.add(t2);
       list.add(t3);
+
+      t1.start();
+      t2.start();
+      t3.start();
     }
 
     // 스레드 풀에서 한 개의 스레드를 꺼낸다.
     @Override
     public MyThread get() {
-      if (list.size() > 0) {
+      if (list.size() > 0) { // 컬렉션에 남아 있는 스레드가 있다면,
         return list.remove(0);
       }
-      return null;
+      return null; // 없으면, null을 리턴한다.
+      // 현재 이 예제에서는 오직 3개의 스레드만 쓰도록 하였다.
     }
 
     // 스레드를 다 쓴 후에는 다시 스레드 풀에 돌려준다.
