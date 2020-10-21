@@ -7,7 +7,7 @@ public class Test01 {
 
     car.addCarObserver(new SafeBeltCarObserver());
     car.addCarObserver(new EngineOilCarObserver());
-    car.addCarObserver(new BrakeOilCarObserver());
+    car.addCarObserver(new BreakOilCarObserver());
 
     // 전조등을 끄는 옵저버를 추가한다.
     // - 기존 구조에서는 Car 클래스에 코드를 추가하였다!!!
