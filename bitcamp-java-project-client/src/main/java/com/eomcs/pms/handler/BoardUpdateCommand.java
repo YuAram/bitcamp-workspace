@@ -16,21 +16,24 @@ public class BoardUpdateCommand implements Command {
     String title = null;
     String content = null;
 
-
     try (Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb","study","1111");
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
         PreparedStatement stmt = con.prepareStatement(
             "select title, content"
                 + " from pms_board"
-                + " where no = " + no);
-        ResultSet rs = stmt.executeQuery()) {
+                + " where no = ?")) {
 
-      if (rs.next()) {
-        title = rs.getString("title");
-        content = rs.getString("content");
-      } else {
-        System.out.println("해당 번호의 게시물이 존재하지 않습니다.");
-        return;
+      stmt.setInt(1, no);
+
+      try (ResultSet rs = stmt.executeQuery()) {
+        if (rs.next()) {
+          title = rs.getString("title");
+          content = rs.getString("content");
+
+        } else {
+          System.out.println("해당 번호의 게시물이 존재하지 않습니다.");
+          return;
+        }
       }
     } catch (Exception e) {
       System.out.println("게시글 조회 중 오류 발생!");
@@ -47,10 +50,10 @@ public class BoardUpdateCommand implements Command {
       return;
     }
 
-    try (Connection con = DriverManager.getConnection( //
+    try (Connection con = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
         PreparedStatement stmt = con.prepareStatement(
-            "update pms_board set title =?, content=? where no=?")) {
+            "update pms_board set title = ?, content = ? where no = ?")) {
 
       stmt.setString(1, title);
       stmt.setString(2, content);
