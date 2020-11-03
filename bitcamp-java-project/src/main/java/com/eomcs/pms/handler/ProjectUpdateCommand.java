@@ -42,11 +42,12 @@ public class ProjectUpdateCommand implements Command {
           project.setStartDate(rs.getDate("sdt"));
           project.setEndDate(rs.getDate("edt"));
 
-          // 관지라 정보를 가져와서 프로젝트 객체에 담는다.
+          // 관리자 정보를 가져와서 프로젝트 객체에 담는다.
           Member owner = new Member();
           owner.setNo(rs.getInt("owner"));
           owner.setName(rs.getString("owner_name"));
           project.setOwner(owner);
+
         } else {
           System.out.println("해당 번호의 프로젝트가 존재하지 않습니다.");
           return;

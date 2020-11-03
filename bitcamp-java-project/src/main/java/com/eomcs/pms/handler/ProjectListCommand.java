@@ -20,6 +20,7 @@ public class ProjectListCommand implements Command {
 
       try (ResultSet rs = stmt.executeQuery()) {
         System.out.println("번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원");
+
         while (rs.next()) {
           StringBuilder members = new StringBuilder();
           try (PreparedStatement stmt2 = con.prepareStatement(

@@ -23,14 +23,13 @@ public class ProjectDeleteCommand implements Command {
         PreparedStatement stmt = con.prepareStatement(
             "delete from pms_project where no=?")) {
 
-      // => 프로젝트에 참여하는 모든 팀언을 삭제한다.
+      // => 프로젝트에 참여하는 모든 팀원을 삭제한다.
       try (PreparedStatement stmt2 = con.prepareStatement(
           "delete from pms_member_project where project_no=" + no)) {
         stmt2.executeUpdate();
       }
 
       stmt.setInt(1, no);
-
       int count = stmt.executeUpdate();
 
       if (count == 0) {
