@@ -39,8 +39,7 @@ public class BoardDao {
 
   public Board findByNo(int no) throws Exception {
     try (Connection con = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111")
-        ;
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
         PreparedStatement stmt = con.prepareStatement(
             "select"
                 + " b.no,"
@@ -57,7 +56,7 @@ public class BoardDao {
       try (ResultSet rs = stmt.executeQuery()) {
         if (rs.next()) {
           Board board = new Board();
-          board.setNo(rs.getInt(no));
+          board.setNo(rs.getInt("no"));
           board.setTitle(rs.getString("title"));
           board.setContent(rs.getString("content"));
 
@@ -84,23 +83,19 @@ public class BoardDao {
   }
 
   public List<Board> findAll() throws Exception {
-
     try (Connection con = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
         PreparedStatement stmt = con.prepareStatement(
-            "select b.no,"
-                + " b.title,"
-                + " b.cdt,"
-                + " b.vw_cnt,"
-                + " m.no writer_no,"
-                + " m.name"
+            "select b.no, b.title, b.cdt, b.vw_cnt, m.no writer_no, m.name"
                 + " from pms_board b inner join pms_member m on b.writer=m.no"
                 + " order by b.no desc")) {
 
       try (ResultSet rs = stmt.executeQuery()) {
+
         ArrayList<Board> list = new ArrayList<>();
+
         while (rs.next()) {
-          Board board= new Board();
+          Board board = new Board();
           board.setNo(rs.getInt("no"));
           board.setTitle(rs.getString("title"));
 
@@ -108,6 +103,7 @@ public class BoardDao {
           member.setNo(rs.getInt("writer_no"));
           member.setName(rs.getString("name"));
           board.setWriter(member);
+
           board.setRegisteredDate(rs.getDate("cdt"));
           board.setViewCount(rs.getInt("vw_cnt"));
 

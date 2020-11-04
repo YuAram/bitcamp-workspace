@@ -25,9 +25,9 @@ public class BoardDeleteCommand implements Command {
     try {
       int count = boardDao.delete(no);
       if (count == 0) {
-        System.out.println("해당 번호의 게시글이 존재하지 않습니다.");
+        System.out.println("해당 번호의 게시물이 존재하지 않습니다.");
       } else {
-        System.out.println("게시물을 삭제하였습니다.");
+        System.out.println("게시글을 삭제하였습니다.");
       }
     } catch (Exception e) {
       System.out.println("게시글 삭제 중 오류 발생!");
