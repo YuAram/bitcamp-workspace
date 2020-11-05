@@ -1,7 +1,8 @@
-# 38. 데이터 처리 코드를 별도의 클래스로 분리하기 : DAO 클래스 도입
+# 38-c. 데이터 처리 코드를 별도의 클래스로 분리하기 : DB 커넥션 객체 공유하기
 
 이번 훈련에서는,
-- **DAO(Data Access Object)** 의 역할을 이해하고 데이터 처리 코드를 분리하는 연습을 한다.
+- **DB 커넥션 객체 공유** 의 문제점을 이해하고 해결 방안을 알아본다.
+
 
 
 ## 훈련 목표
@@ -12,26 +13,27 @@
 
 ## 실습
 
-### 1단계 - `BoardXxxCommand` 클래스에서 데이터 처리 코드를 분리하여 `BoardDao` 클래스를 정의한다.
+### 1단계 - 각 DAO 메서드에서 DB 커넥션을 생성하지 않고 공유한다.
 
-- com.eomcs.pms.dao.BoardDao 클래스 생성
-  - `BoardAddCommand` 에서 게시글 데이터를 입력하는 코드를 가져와서 insert() 메서드로 정의한다.
-- com.eomcs.pms.dao.MemberDao 클래스 생성
-  - `MemberListCommand` 에서 회원 정보를 찾는 코드를 가져와서 findByName() 메서드로 정의한다.
-- `com.eomcs.pms.handler.BoardAddCommand` 변경
-  - 데이터 처리와 관련된 코드를 `BoardDao.insert()` 로 옮긴다.
-- `com.eomcs.pms.handler.BoardDeleteCommand` 변경
-  - 데이터 처리와 관련된 코드를 `BoardDao.delete()` 로 옮긴다.
-- - `com.eomcs.pms.handler.BoardDetailCommand` 변경
-  - 데이터 처리와 관련된 코드를 `BoardDao.findByNo()` 로 옮긴다.
-- - `com.eomcs.pms.handler.BoardListCommand` 변경
-  - 데이터 처리와 관련된 코드를 `BoardDao.findAll()` 로 옮긴다.
-- - `com.eomcs.pms.handler.BoardUpdateCommand` 변경
-  - 데이터 처리와 관련된 코드를 `BoardDao.update()` 로 옮긴다.
+- com.eomcs.pms.listener.AppInitListener 변경
+  - contextInitialized() 가 호출될 때 Connection 객체를 생성하여 context 맵에 담아 놓는다.
+  - contextDestroyed() 가 호출될 때 Connection 객체를 닫는다.
+- com.eomcs.pms.App 변경
+  - context 맵에 보관된 Connection 객체를 꺼낸다.
+  - DAO 객체를 생성할 때 주입한다.
+- com.eomcs.pms.dao.mariadb.XxxDaoImpl 클래스 변경
+  - 생성자에서 파라미터로 DB 커넥션을 주입 받는다.
+  - 각 메서드는 이렇게 주입 받은 DB 커넥션을 사용한다.
+
 
 
 ## 실습 결과
-- src/main/java/com/eomcs/pms/domain/Task.java 변경
-- src/main/java/com/eomcs/pms/domain/Board.java 변경
-- src/main/java/com/eomcs/pms/handler/TaskXxxCommand.java 변경
-- src/main/java/com/eomcs/pms/handler/BoardXxxCommand.java 변경
+- src/main/java/com/eomcs/pms/dao/BoardDao.java 변경
+- src/main/java/com/eomcs/pms/dao/MemberDao.java 변경
+- src/main/java/com/eomcs/pms/dao/ProjectDao.java 변경
+- src/main/java/com/eomcs/pms/dao/TeamDao.java 변경
+- src/main/java/com/eomcs/pms/dao/mariadb/BoardDaoImpl.java 생성
+- src/main/java/com/eomcs/pms/dao/mariadb/MemberDaoImpl.java 생성
+- src/main/java/com/eomcs/pms/dao/mariadb/ProjectDaoImpl.java 생성
+- src/main/java/com/eomcs/pms/dao/mariadb/TeamDaoImpl.java 생성
+- src/main/java/com/eomcs/pms/App.java 변경
