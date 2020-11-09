@@ -1,75 +1,68 @@
-# 40-b. 커맨드 실행 전/후에 기능 추가하기: Chain of Responsibility 패턴 적용
+# 41-a. 41-a. DB 프로그래밍 더 쉽고 간단히 하는 방법 : Mybatis 퍼시스턴스 프레임워크 도입
 
 이번 훈련에서는,
-- **Chain of Responsibility 디자인 패턴** 을 응용하는 방법을 배울 것이다.
+- 실무에서 자주 쓰이는 *퍼시스턴스 프레임워크* 중에 하나인 **마이바티스** 프레임워크의 사용법을 배울 것이다.
+
+**퍼시스턴스 프레임워크(Persistence Framework)** 는,
+- 데이터의 저장, 조회, 변경, 삭제를 다루는 클래스 및 설정 파일들의 집합이다.(위키백과)
+- JDBC 프로그래밍의 번거로움 없이 간결하게 데이터베이스와 연동할 수 있다.
+- 소스 코드에서 SQL 문을 분리하여 관리한다.
+
+**마이바티스(Mybatis)** 는,
+- *퍼시스턴스 프레임워크* 중의 하나이다.
+- JDBC 프로그래밍을 캡슐화하여 데이터베이스 연동을 쉽게 하도록 도와준다.
+- 자바 소스 파일에서 SQL을 분리하여 별도의 파일로 관리하기 때문에
+  자바 소스 코드를 간결하게 유지할 수 있다.
+- JDBC 프로그래밍 할 때와 마찬가지로 직접 SQL을 다루기 때문에
+  레거시(legacy) 시스템에서 사용하는 데이터베이스와 연동할 때 유리하다.
+- SQL을 통해 데이터베이스와 연동한다고 해서 보통 **SQL 매퍼(mapper)** 라 부른다.
 
 ## 훈련 목표
--
+- **Mybatis SQL 맵퍼** 의 특징과 동작 원리를 이해한다.
+- Mybatis 퍼시스턴스 프레임워크를 설정하고 다루는 방법을 배운다.
 
 ## 훈련 내용
 -
 
 ## 실습
 
-### 1단계 - 필터에게 제공할 정보를 다루는 Request 객체를 정의한다.
+### 1단계 - 프로젝트에 MyBatis 라이브러리를 추가한다.
 
-- com.eomcs.pms.handler.Request 생성
-  - 사용자가 요청한 명령어를 보관한다.
-  - App 객체가 값을 공유하기 위해 만든 context 맵 객체를 보관한다.
-- com.eomcs.pms.App 변경
-  - 사용자 입력이 들어오면 Request 객체를 준비한다.
-  - 백업: App01.java
+- build.gradle   
+  - `search.maven.org` 사이트에서 *mybatis* 라이브러리 정보를 찾는다.
+  - 의존 라이브러리 블록에서 `mybatis` 라이브러리를 등록한다.
+- gradle을 이용하여 eclipse 설정 파일을 갱신한다.
+  - `$ gradle eclipse`
+- 이클립스에서 프로젝트를 갱신한다.
 
-### 2단계 - 커맨드 실행 전/후에 삽입되는 필터의 호출 규칙을 정의한다.
+### 2단계 - `MyBatis` 설정 파일을 준비한다.
 
-- com.eomcs.pms.filter.CommandFilterManager 클래스 생성
-  - 필터를 관리한다.
-  - 또한 실행 순서에 따라 필터를 실행시킨다.
-- com.eomcs.pms.filter.FilterChain 인터페이스 생성
-  - 필터가 다음 필터를 실행시키기 위해 필터 관리자에게 요청하는 메서드의 규칙을 정의한다.
-- com.eomcs.pms.filter.CommandFilter 인터페이스 생성
-  - 필터 관리자가 호출할 메서드 규칙을 정의한다.
+- src/main/resources/com/eomcs/pms/conf/jdbc.properties
+  - 마이바티스 홈 : <http://www.mybatis.org>
+  - `MyBatis` 설정 파일에서 참고할 DBMS 접속 정보를 등록한다.
+- src/main/resources/com/eomcs/pms/conf/mybatis-config.xml
+  - `MyBatis` 설정 파일이다.
+  - DBMS 서버의 접속 정보를 갖고 있는 jdbc.properties 파일의 경로를 등록한다.
+  - DBMS 서버 정보를 설정한다.
+  - DB 커넥션 풀을 설정한다.
 
-### 3단계 - 필터 관리자를 App 클래스에 적용한다.
 
-- com.eomcs.pms.App 변경
-  - 필터 관리자를 준비하고 호출하는 코드를 추가한다.
+### 3단계: BoardDaoImpl 에 Mybatis를 적용한다.
 
-### 3단계 - 사용자가 입력한 명령어를 로그 파일에 기록하는 필터 만들기
-
-기존에 작성한 코드를 필터로 옮긴다.
-
-- com.eomcs.pms.App 변경
-  - 커맨드 객체를 실행하기 전에 로그인 여부를 검사한다.
-  - 백업: App01.java
-
-### 2단계 - 커맨드 실행 전에 사용자가 입력한 모든 명령을 파일로 로그를 남긴다.
-
-다음과 같이 동작하도록 구현한다.
-```
-명령> /login
-...
-명령> /board/list
-...
-명령> /board/add
-...
-명령> hul...
-...
-명령> 이게뭐야
-...
-```
-
-- /command.log 파일 생성
-  - 파일 출력 예:
-```
-/login
-/board/list
-/board/add
-hul...
-이게뭐야
-```
-
+- com.eomcs.pms.dao.mariadb.BoardDaoImpl 클래스 변경
+  - SQL을 뜯어내어 BoardMapper.xml로 옮긴다.
+  - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
+- com/eomcs/pms/mapper/BoardMapper.xml 추가
+  - BoardDaoImpl 에 있던 SQL문을 이 파일로 옮긴다.
+- com/eomcs/pms/conf/mybatis-config.xml 변경
+  - BoardMapper 파일의 경로를 등록한다.
 
 
 ## 실습 결과
+- build.gradle 변경
+- src/main/resources/com/eomcs/pms/conf/jdbc.properties 생성
+-
+- src/main/java/com/eomcs/pms/filter/CommandFilter.java 변경
+- src/main/java/com/eomcs/pms/filter/LogCommandFilter.java 변경
+- src/main/java/com/eomcs/pms/filter/CommandFilterManager.java 변경
 - src/main/java/com/eomcs/pms/App.java 변경
