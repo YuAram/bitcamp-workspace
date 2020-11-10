@@ -6,7 +6,7 @@
 <mapper namespace="ProjectDao">
   
   <resultMap type="com.eomcs.pms.domain.Project" id="ProjectMap">
-    <id column="no"       property="no"/>
+    <id column="no"           property="no"/>
     <result column="title"    property="title"/>
     <result column="content"  property="content"/>
     <result column="sdt"      property="startDate"/>
@@ -18,11 +18,10 @@
     </association>
     
     <collection property="members" ofType="com.eomcs.pms.domain.Member">
-      <id column="member_no"        property="no"/>
-      <result column="member_name"  property="name"/>
+      <id column="member_no"          property="no"/>
+      <result column="member_name"    property="name"/>
     </collection>
   </resultMap>
-
 
   <select id="findAll" resultMap="ProjectMap">
     select 
@@ -42,30 +41,21 @@
     order by p.no desc
   </select>
   
-  
   <insert id="insert" parameterType="com.eomcs.pms.domain.Project"
           useGeneratedKeys="true" keyColumn="no" keyProperty="no">
     insert into pms_project(title,content,sdt,edt,owner)
     values(#{title},#{content},#{startDate},#{endDate},#{owner.no})
   </insert>
   
-  
   <insert id="insertMember" parameterType="java.util.Map">
     insert into pms_member_project(member_no, project_no) 
     values(#{memberNo},#{projectNo})
   </insert>
   
-  
   <delete id="deleteMembers" parameterType="java.lang.Integer">
     delete from pms_member_project 
     where project_no=#{no}
   </delete>
-  
-  <delete id="delete" parameterType="java.lang.Integer">
-    delete from pms_project 
-    where no=#{no}
-  </delete>
-  
   
   <select id="findByNo" resultMap="ProjectMap" parameterType="java.lang.Integer">
     select 
@@ -88,31 +78,20 @@
   </select>
   
   <update id="update" parameterType="com.eomcs.pms.domain.Project">
-  update pms_project set
-              title = #{title},
-              content = #{content},
-              sdt = #{startDate},
-              edt = #{endDate},
-              owner = #{owner.no}
-              where no = #{no}
-  </update>
-  
-<!--  
-  <update id="updateViewCount" parameterType="java.lang.Integer">
-    update pms_board set 
-      vw_cnt = vw_cnt + 1
+    update pms_project set
+      title = #{title},
+      content = #{content},
+      sdt = #{startDate},
+      edt = #{endDate},
+      owner = #{owner.no}
     where no = #{no}
   </update>
 
-  <update id="update" parameterType="com.eomcs.pms.domain.Board">
-    update pms_board set 
-      title = #{title}, 
-      content = #{content} 
-    where no = #{no}
-  </update>
-  
-  
--->
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from pms_project
+    where no=#{no}
+  </delete>
+
 </mapper>
 
 
