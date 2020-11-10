@@ -1,7 +1,6 @@
 package com.eomcs.pms.listener;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.ibatis.io.Resources;
@@ -49,9 +48,6 @@ public class AppInitListener implements ApplicationContextListener {
 
     // 시스템에서 사용할 객체를 준비한다.
     try {
-      Connection con = DriverManager.getConnection(
-          "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
-
       // Mybatis 객체 준비
       SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(
           Resources.getResourceAsStream("com/eomcs/pms/conf/mybatis-config.xml"));
@@ -60,7 +56,7 @@ public class AppInitListener implements ApplicationContextListener {
       BoardDao boardDao = new BoardDaoImpl(sqlSessionFactory);
       MemberDao memberDao = new MemberDaoImpl(sqlSessionFactory);
       ProjectDao projectDao = new ProjectDaoImpl(sqlSessionFactory);
-      TaskDao taskDao = new TaskDaoImpl(con, sqlSessionFactory);
+      TaskDao taskDao = new TaskDaoImpl(sqlSessionFactory);
 
       // Command 구현체 생성 및 commandMap 객체 준비
       Map<String,Command> commandMap = new HashMap<>();

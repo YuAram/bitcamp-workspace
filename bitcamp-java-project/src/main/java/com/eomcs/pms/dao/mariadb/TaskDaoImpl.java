@@ -1,6 +1,5 @@
 package com.eomcs.pms.dao.mariadb;
 
-import java.sql.Connection;
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -8,11 +7,9 @@ import com.eomcs.pms.domain.Task;
 
 public class TaskDaoImpl implements com.eomcs.pms.dao.TaskDao {
 
-  Connection con;
   SqlSessionFactory sqlSessionFactory;
 
-  public TaskDaoImpl(Connection con, SqlSessionFactory sqlSessionFactory) {
-    this.con = con;
+  public TaskDaoImpl(SqlSessionFactory sqlSessionFactory) {
     this.sqlSessionFactory = sqlSessionFactory;
   }
 
