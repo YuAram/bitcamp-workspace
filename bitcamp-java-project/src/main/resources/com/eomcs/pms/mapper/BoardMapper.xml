@@ -58,7 +58,7 @@ namespace 속성
       - 이렇게 여러 개 생성된 도메인 객체는 List 컬렉션 객체에 저장된다.
       - 그리고 List 컬렉션 객체가 최종적으로 리턴된다.
    -->
-  <select id="findAll" resultMap="BoardMap">
+  <select id="findAll" resultMap="BoardMap" parameterType="string">
     select 
       b.no, 
       b.title, 
@@ -69,6 +69,12 @@ namespace 속성
     from 
       pms_board b 
       inner join pms_member m on b.writer=m.no
+    <if test="keyword != null">
+    where
+      b.title like #{keyword}
+      or b.content like #{keyword}
+      or m.name like #{keyword}
+    </if>
     order by 
       b.no desc
   </select>

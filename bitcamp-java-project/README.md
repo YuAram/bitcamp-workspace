@@ -1,4 +1,4 @@
-# 41-a. DB 프로그래밍 더 쉽고 간단히 하는 방법 : Mybatis 퍼시스턴스 프레임워크 도입
+# 41-b. DB 프로그래밍 더 쉽고 간단히 하는 방법 : Mybatis 기타 기능 활용하기
 
 이번 훈련에서는,
 - 실무에서 자주 쓰이는 *퍼시스턴스 프레임워크* 중에 하나인 **마이바티스** 프레임워크의 사용법을 배울 것이다.
@@ -26,86 +26,131 @@
 
 ## 실습
 
-### 1단계 - 프로젝트에 MyBatis 라이브러리를 추가한다.
+### 1단계 - fully-qualified class name 에 대해 별명을 부여하기
 
-- build.gradle   
-  - `search.maven.org` 사이트에서 *mybatis* 라이브러리 정보를 찾는다.
-  - 의존 라이브러리 블록에서 `mybatis` 라이브러리를 등록한다.
-- gradle을 이용하여 eclipse 설정 파일을 갱신한다.
-  - `$ gradle eclipse`
-- 이클립스에서 프로젝트를 갱신한다.
+- src/main/resources/com/eomcs/pms/conf/mybatis-config.xml 변경
+  - 클래스 이름에 대해 별명을 지정한다.
+```
+<typeAliases>
+  <typeAlias type="com.eomcs.pms.domain.Board" alias="board"/>
+  <typeAlias type="com.eomcs.pms.domain.Member" alias="member"/>
+  <typeAlias type="com.eomcs.pms.domain.Project" alias="project"/>
+  <typeAlias type="com.eomcs.pms.domain.Task" alias="task"/>
+</typeAliases>
+```
+- src/main/resources/com/eomcs/pms/mapper/XxxMapper.xml 변경
+  - 클래스 이름 대신 별명을 사용한다.
 
-### 2단계 - `MyBatis` 설정 파일을 준비한다.
+일부 자바 클래스에서 대해서 미리 별명이 부여되었다.
+- 예)
+  - int -> _int
+  - java.lang.Integer -> int
+  - java.lang.String -> string
+  - java.util.Map -> map
+  - java.util.HashMap -> hashmap
 
-- src/main/resources/com/eomcs/pms/conf/jdbc.properties
-  - 마이바티스 홈 : <http://www.mybatis.org>
-  - `MyBatis` 설정 파일에서 참고할 DBMS 접속 정보를 등록한다.
-- src/main/resources/com/eomcs/pms/conf/mybatis-config.xml
-  - `MyBatis` 설정 파일이다.
-  - DBMS 서버의 접속 정보를 갖고 있는 jdbc.properties 파일의 경로를 등록한다.
-  - DBMS 서버 정보를 설정한다.
-  - DB 커넥션 풀을 설정한다.
+### 2단계 - 특정 패키지에 소속된 전체 클래스에 대해 별명 부여한다.
 
+- src/main/resources/com/eomcs/pms/conf/mybatis-config.xml 변경
+```
+<typeAliases>
+  <package name="com.eomcs.pms.domain"/>
+</typeAliases>
+```
 
-### 3단계: BoardDaoImpl 에 Mybatis를 적용한다.
+### 3단계 - 게시글 검색 기능을 추가한다.
 
+마이바티스의 `if` 태그를 사용하여 동적 SQL을 작성한다.
+
+- 검색어에 해당하는 게시글이 있을 경우,
+```
+명령> /board/search
+검색어? ok
+번호, 제목, 작성자, 등록일, 조회수
+13, okok4, ccc, 2020-11-09, 0
+12, okok2, aaa, 2020-11-09, 0
+8, okok, ggg, 2020-11-05, 0
+```
+
+- 검색어에 해당하는 게시글이 없을 경우,
+```
+명령> /board/search
+검색어? ㅋㅋ
+```
+
+- 검색어를 입력하지 않을 경우
+```
+명령> /board/search
+검색어?
+번호, 제목, 작성자, 등록일, 조회수
+13, okok4, ccc, 2020-11-09, 0
+12, okok2, aaa, 2020-11-09, 0
+10, test, ggg, 2020-11-06, 0
+9, hul..., aaa, 2020-11-05, 0
+8, okok, ggg, 2020-11-05, 0
+```
+
+- src/main/resources/com/eomcs/pms/mapper/BoardMapper.xml 변경
+  - `findAll` SQL 문을 변경한다.
+- com.eomcs.pms.dao.BoardDao 인터페이스 변경
+  - `findAll()` 을 `findAll(String keyword)` 으로 변경한다.
 - com.eomcs.pms.dao.mariadb.BoardDaoImpl 클래스 변경
-  - SQL을 뜯어내어 BoardMapper.xml로 옮긴다.
-  - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
-  - 백업: BoardDaoImpl01.java
-- com/eomcs/pms/mapper/BoardMapper.xml 추가
-  - BoardDaoImpl 에 있던 SQL문을 이 파일로 옮긴다.
-- com/eomcs/pms/conf/mybatis-config.xml 변경
-  - BoardMapper.xml 파일의 경로를 등록한다.
-
-### 4단계: App 에서 사용하는 객체를 AppInitListener 에서 모두 준비한다.
-
-- com.eomcs.pms.dao.mariadb.BoardDaoImpl 클래스 변경
-  - 각 메서드에서 SqlSessionFactory를 준비하는 대신에 생성자의 파라미터로 주입 받는다.
+  - `findAll(String keyword)` 를 구현한다.
+- com.eomcs.pms.handler.BoardSearchCommand 클래스 생성
+  - `BoardDao.findAll()` 을 사용하여 검색 기능을 처리한다.
 - com.eomcs.pms.listener.AppInitListener 클래스 변경
-  - `SqlSessionFactory` 객체를 생성한다.
-  - `XxxDao` 구현체 생성 코드도 이 클래스로 옮긴다.
-  - `Command` 구현체 생성 코드도 이 클래스로 옮긴다.
-- com.eomcs.pms.App 클래스 변경
-  - DAO 구현체 생성 코드와 Command 구현체 생성 코드를 제거한다.
-  - commandMap 객체 생성 코드도 제거한다.
+  - `/board/search` 를 처리할 `BoardSearchCommand` 객체를 등록한다.
 
-### 5단계: MemberDaoImpl 에 Mybatis를 적용한다.
+### 4단계 - 프로젝트 검색 기능을 추가한다.
 
-- com.eomcs.pms.dao.mariadb.MemberDaoImpl 클래스 변경
-  - SQL을 뜯어내어 MemberMapper.xml로 옮긴다.
-  - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
-- com/eomcs/pms/mapper/MemberMapper.xml 추가
-  - MemberDaoImpl 에 있던 SQL문을 이 파일로 옮긴다.
-- com/eomcs/pms/conf/mybatis-config.xml 변경
-  - MemberMapper.xml 파일의 경로를 등록한다.
+마이바티스의 `if` 태그를 여러 개 사용하여 동적 SQL을 작성한다.
 
-### 6단계: ProjectDaoImpl 에 Mybatis를 적용한다.
+```
+명령> /project/search
+항목(1:프로젝트명, 2:관리자명, 3:팀원, 그 외: 전체)? 1
+검색어? java
+번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원
+21, javajavaxx, 2020-02-02 ~ 2020-03-03, aaa, [ccc,ddd]
+17, java1, 2020-01-01 ~ 2020-02-02, aaa, []
+```
 
+- com.eomcs.pms.dao.ProjectDao 인터페이스 변경
+  - `findByKeyword(String item, String keyword)` 을 추가한다.
 - com.eomcs.pms.dao.mariadb.ProjectDaoImpl 클래스 변경
-  - SQL을 뜯어내어 ProjectMapper.xml로 옮긴다.
-  - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
-- com.eomcs.pms.dao.TaskDao 인터페이스 변경
-  - 프로젝트의 작업을 삭제하는 deleteByProjectNo() 메서드 추가
-- com.eomcs.pms.dao.mariadb.TaskDaoImpl 클래스 변경
-  - 프로젝트의 작업을 삭제하는 deleteByProjectNo() 메서드 구현
-    - 프로젝트에 종속된 작업을 삭제하는 SQL을 뜯어내어 TaskMapper.xml로 옮긴다.
-    - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
-- com/eomcs/pms/mapper/ProjectMapper.xml 추가
-  - ProjectDaoImpl 에 있던 SQL문을 이 파일로 옮긴다.
-- com/eomcs/pms/mapper/TaskMapper.xml 추가
-  - ProjectDaoImpl 에 있던 프로젝트의 작업을 삭제하는 SQL문을 이 파일로 옮긴다.
-- com/eomcs/pms/conf/mybatis-config.xml 변경
-  - ProjectMapper.xml 파일의 경로를 등록한다.
-  - TaskMapper.xml 파일의 경로를 등록한다.
+  - `findByKeyword(String item, String keyword)` 를 구현한다.
+- src/main/resources/com/eomcs/pms/mapper/ProjectMapper.xml 변경
+  - `findByKeyword` SQL 문을 추가한다.
+- com.eomcs.pms.handler.ProjectSearchCommand 클래스 생성
+  - `ProjectDao.findByKeyword()` 을 사용하여 검색 기능을 처리한다.
+- com.eomcs.pms.listener.AppInitListener 클래스 변경
+  - `/project/search` 를 처리할 `ProjectSearchCommand` 객체를 등록한다.
 
-### 7단계: TaskDaoImpl 에 Mybatis를 적용한다.
 
-- com.eomcs.pms.dao.mariadb.TaskDaoImpl 클래스 변경
-  - SQL을 뜯어내어 TaskMapper.xml로 옮긴다.
-  - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
-- com/eomcs/pms/mapper/TaskMapper.xml 변경
-  - TaskDaoImpl 에 있던 SQL문을 이 파일로 옮긴다.
+### 5단계 - 프로젝트 상세 검색 기능을 추가한다.
+
+마이바티스의 `where` 태그를 사용하여 동적 SQL을 작성한다.
+
+```
+명령> /project/detailSearch
+[프로젝트 상세 검색]
+프로젝트명? java
+관리자명? aaa
+팀원? bbb
+번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원
+21, javajavaxx, 2020-02-02 ~ 2020-03-03, aaa, [ccc,ddd]
+17, java1, 2020-01-01 ~ 2020-02-02, aaa, []
+```
+
+- src/main/resources/com/eomcs/pms/mapper/ProjectMapper.xml 변경
+  - `findByDetailKeyword` SQL 문을 추가한다.
+- com.eomcs.pms.dao.ProjectDao 인터페이스 변경
+  - `findByDetailKeyword(Map<String,Object> keywords)` 을 추가한다.
+- com.eomcs.pms.dao.mariadb.ProjectDaoImpl 클래스 변경
+  - `findByDetailKeyword(String item, String keyword)` 를 구현한다.
+- com.eomcs.pms.handler.ProjectDetailSearchCommand 클래스 생성
+  - `ProjectDao.findByDetailKeyword()` 을 사용하여 검색 기능을 처리한다.
+- com.eomcs.pms.listener.AppInitListener 클래스 변경
+  - `/project/detailSearch` 를 처리할 `ProjectDetailSearchCommand` 객체를 등록한다.
 
 
 ## 실습 결과
