@@ -33,7 +33,6 @@
   <select id="selectBoard1" 
           resultMap="BoardMap" 
           parameterType="int">
-  <![CDATA[]
     select 
       board_id,
       title, 
@@ -41,8 +40,7 @@
       created_date,
       view_count 
     from x_board
-    where board_id < #{ohora}
-  ]]>
+    where board_id > #{ohora}
   </select>
   
   <!-- selectList(sqlid, String) -->
