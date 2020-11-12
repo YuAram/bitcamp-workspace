@@ -1,5 +1,6 @@
 package com.eomcs.pms.handler;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.eomcs.pms.dao.ProjectDao;
@@ -19,11 +20,24 @@ public class ProjectDetailSearchCommand implements Command {
     System.out.println("[프로젝트 상세 검색]");
 
     try {
-      String title = Prompt.inputString("프로젝트명? ");
-      String owner = Prompt.inputString("관리자명? ");
-      String member = Prompt.inputString("팀원명? ");
+      HashMap<String,Object> keywords = new HashMap<>();
 
-      List<Project> list = projectDao.findByDetailKeyword(title, owner, member);
+      String title = Prompt.inputString("프로젝트명? ");
+      if (title.length() > 0) {
+        keywords.put("title", title);
+      }
+
+      String owner = Prompt.inputString("관리자명? ");
+      if (owner.length() > 0) {
+        keywords.put("owner", owner);
+      }
+
+      String member = Prompt.inputString("팀원명? ");
+      if (member.length() > 0) {
+        keywords.put("member", member);
+      }
+
+      List<Project> list = projectDao.findByDetailKeyword(keywords);
       System.out.println("번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원");
 
       for (Project project : list) {
@@ -44,7 +58,7 @@ public class ProjectDetailSearchCommand implements Command {
             members.toString());
       }
     } catch (Exception e) {
-      System.out.println("프로젝트 상세 검색 중 오류 발생!");
+      System.out.println("프로젝트 목록 조회 중 오류 발생!");
       e.printStackTrace();
     }
   }

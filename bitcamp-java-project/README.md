@@ -120,6 +120,20 @@
   - `findByKeyword(String item, String keyword)` 를 구현한다.
 - src/main/resources/com/eomcs/pms/mapper/ProjectMapper.xml 변경
   - `findByKeyword` SQL 문을 추가한다.
+```
+<select id="findByKeyword" resultMap="ProjectMap" parameterType="map">
+...
+  <if test="item == 1">
+  where p.title like concat('%', #{keyword}, '%')
+  </if>
+  <if test="item == 2">
+  where m.name like concat('%', #{keyword}, '%')
+  </if>
+  <if test="item == 3">
+  where m2.name like concat('%', #{keyword}, '%')
+  </if>
+</select>
+```
 - com.eomcs.pms.handler.ProjectSearchCommand 클래스 생성
   - `ProjectDao.findByKeyword()` 을 사용하여 검색 기능을 처리한다.
 - com.eomcs.pms.listener.AppInitListener 클래스 변경
@@ -152,17 +166,100 @@
 - com.eomcs.pms.listener.AppInitListener 클래스 변경
   - `/project/detailSearch` 를 처리할 `ProjectDetailSearchCommand` 객체를 등록한다.
 
+### 6단계 - 프로젝트 검색 기능의 mybatis 코드를 변경한다.
+
+- 조건에 상호 배타적인 상황에서는 `if` 태그 보다는 `choose` 태그를 사용하는게 낫다.
+- `if` 태그 대신에 `choose` 태그를 사용해보자.
+- src/main/resources/com/eomcs/pms/mapper/ProjectMapper.xml 변경
+```
+<select id="findByKeyword" resultMap="ProjectMap" parameterType="map">
+...
+  <choose>
+    <when test="item == 1">
+    p.title like concat('%', #{keyword}, '%')
+    </when>
+    <when test="item == 2">
+    m.name like concat('%', #{keyword}, '%')
+    </when>
+    <otherwise>
+    m2.name like concat('%', #{keyword}, '%')
+    </otherwise>
+  </choose>
+</select>
+```
+
+### 7단계 - 회원 정보 변경할 때 사용자가 입력한 항목만 변경한다.
+
+마이바티스의 `set` 태그와 `if` 태그를 사용하면,
+`update` SQL 문을 좀 더 유연하게 만들 수 있다.
+
+- 이전 방식은 한 개의 값을 바꾸더라도 모든 항목의 값을 다시 입력해야 했다.
+- 만약 바꾸고 싶은 값만 입력한다면 나머지 값은 빈 문자열이 되었다.
+```
+명령> /member/update
+[회원 변경]
+번호? 14
+이름(12)?    <--- 입력 안함
+이메일(12)? 13@test.com
+암호?     <--- 입력 안함
+사진(12)?     <--- 입력 안함
+전화(12)? 3333
+정말 변경하시겠습니까?(y/N) y
+회원을 변경하였습니다.
+
+명령> /member/detail
+[회원 상세보기]
+번호? 14
+이름:     <--- 입력 안한 값은 빈 문자열이 들어간다.
+이메일: 13@test.com
+사진:     <--- 입력 안한 값은 빈 문자열이 들어간다.
+전화: 3333
+등록일: 2020-11-06
+
+```
+
+- 새 방식은 변경할 값만 입력한다.
+- 그리고 입력한 값만 변경된다.
+
+```
+명령> /member/update
+[회원 변경]
+번호? 12
+이름(x4)?     <--- 입력 안한 값은 기존 값을 그대로 둔다.
+이메일(x4@test.com)? hhh@test.com
+암호?    <--- 입력 안한 값은 기존 값을 그대로 둔다.
+사진(x4.gif)?     <--- 입력 안한 값은 기존 값을 그대로 둔다.
+전화(1111)? 1255
+정말 변경하시겠습니까?(y/N) y
+회원을 변경하였습니다.
+
+명령> /member/detail
+[회원 상세보기]
+번호? 12
+이름: x4    <--- 입력 안한 값은 그대로다.
+이메일: hhh@test.com
+사진: x4.gif   <--- 입력 안한 값은 그대로다.
+전화: 1255
+등록일: 2020-11-05
+```
+
+
 
 ## 실습 결과
-- build.gradle 변경
-- src/main/resources/com/eomcs/pms/conf/jdbc.properties 생성
+- src/main/resources/com/eomcs/pms/conf/mybatis-config.xml 변경
 - src/main/resources/com/eomcs/pms/mapper/BoardMapper.xml 생성
 - src/main/resources/com/eomcs/pms/mapper/MemberMapper.xml 생성
 - src/main/resources/com/eomcs/pms/mapper/ProjectMapper.xml 생성
 - src/main/resources/com/eomcs/pms/mapper/TaskMapper.xml 생성
+- src/main/java/com/eomcs/pms/dao/BoardDao.java 변경
 - src/main/java/com/eomcs/pms/dao/mariadb/BoardDaoImpl.java 변경
+- src/main/java/com/eomcs/pms/handler/BoardSearchCommand.java 변경
 - src/main/java/com/eomcs/pms/dao/mariadb/MemberDaoImpl.java 변경
+- src/main/java/com/eomcs/pms/dao/ProjectDao.java 변경
 - src/main/java/com/eomcs/pms/dao/mariadb/ProjectDaoImpl.java 변경
+- src/main/java/com/eomcs/pms/handler/ProjectSearchCommand.java 변경
+- src/main/java/com/eomcs/pms/handler/ProjectDetailSearchCommand.java 변경
+-
 - src/main/java/com/eomcs/pms/dao/TaskDao.java 변경
 - src/main/java/com/eomcs/pms/dao/mariadb/TaskDaoImpl.java 변경
 - src/main/java/com/eomcs/pms/listener/AppInitListener.java 변경

@@ -2,6 +2,7 @@ package com.eomcs.pms.dao.mariadb;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import com.eomcs.pms.domain.Member;
@@ -24,12 +25,7 @@ public class ProjectDaoImpl implements com.eomcs.pms.dao.ProjectDao {
       int count = sqlSession.insert("ProjectDao.insert", project);
 
       // 프로젝트의 멤버 정보 입력
-      for (Member member : project.getMembers()) {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("memberNo", member.getNo());
-        map.put("projectNo", project.getNo());
-        sqlSession.insert("ProjectDao.insertMember", map);
-      }
+      sqlSession.insert("ProjectDao.insertMembers", project);
 
       sqlSession.commit();
       return count;
@@ -60,8 +56,7 @@ public class ProjectDaoImpl implements com.eomcs.pms.dao.ProjectDao {
   @Override
   public List<Project> findAll() throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      List<Project> projects = sqlSession.selectList("ProjectDao.findAll");
-      return projects;
+      return sqlSession.selectList("ProjectDao.findAll");
     }
   }
 
@@ -72,24 +67,16 @@ public class ProjectDaoImpl implements com.eomcs.pms.dao.ProjectDao {
     map.put("keyword", keyword);
 
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      List<Project> projects = sqlSession.selectList("ProjectDao.findByKeyword", map);
-      return projects;
+      return sqlSession.selectList("ProjectDao.findByKeyword", map);
     }
   }
 
   @Override
-  public List<Project> findByDetailKeyword(String title, String owner, String member) throws Exception {
-    HashMap<String,Object> map = new HashMap<>();
-    map.put("title", title);
-    map.put("owner", owner);
-    map.put("member", member);
-
+  public List<Project> findByDetailKeyword(Map<String,Object> keywords) throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      List<Project> projects = sqlSession.selectList("ProjectDao.findByDetailKeyword", map);
-      return projects;
+      return sqlSession.selectList("ProjectDao.findByDetailKeyword", keywords);
     }
   }
-
 
   @Override
   public int update(Project project) throws Exception {

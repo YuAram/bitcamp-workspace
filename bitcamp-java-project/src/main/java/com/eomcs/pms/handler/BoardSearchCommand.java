@@ -17,6 +17,7 @@ public class BoardSearchCommand implements Command {
   @Override
   public void execute(Map<String,Object> context) {
     System.out.println("[게시물 검색]");
+
     try {
       String keyword = Prompt.inputString("검색어? ");
 
@@ -30,10 +31,11 @@ public class BoardSearchCommand implements Command {
             board.getRegisteredDate(),
             board.getViewCount());
       }
+
+
     } catch (Exception e) {
       System.out.println("게시글 검색 중 오류 발생!");
       e.printStackTrace();
     }
   }
-
 }

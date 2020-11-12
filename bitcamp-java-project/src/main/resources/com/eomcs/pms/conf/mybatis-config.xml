@@ -3,7 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-  
   <!-- 설정 파일에서 사용할 .properties 파일 정보 -->
   <properties resource="com/eomcs/pms/conf/jdbc.properties"></properties>
 
@@ -20,7 +19,7 @@
     <typeAlias type="com.eomcs.pms.domain.Task" alias="task"/>
 -->
   </typeAliases>
-  
+
   <!-- DBMS 접속 정보들 -->
   <environments default="development">
   

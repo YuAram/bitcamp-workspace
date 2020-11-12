@@ -44,7 +44,7 @@ public class ProjectSearchCommand implements Command {
             members.toString());
       }
     } catch (Exception e) {
-      System.out.println("프로젝트 검색 중 오류 발생!");
+      System.out.println("프로젝트 목록 조회 중 오류 발생!");
       e.printStackTrace();
     }
   }

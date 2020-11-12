@@ -1,6 +1,5 @@
 package com.eomcs.pms.listener;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.ibatis.io.Resources;
@@ -108,12 +107,5 @@ public class AppInitListener implements ApplicationContextListener {
   @Override
   public void contextDestroyed(Map<String,Object> context) {
     System.out.println("프로젝트 관리 시스템(PMS)을 종료합니다!");
-
-    try {
-      Connection con = (Connection) context.get("con");
-      con.close();
-    } catch (Exception e) {
-      // 커넥션을 닫다가 오류가 발생하더라도 무시한다.
-    }
   }
 }
