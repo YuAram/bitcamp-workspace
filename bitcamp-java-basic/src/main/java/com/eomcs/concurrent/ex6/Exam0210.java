@@ -7,10 +7,10 @@ import java.util.Scanner;
 public class Exam0210 {
 
   static class MyThread extends Thread {
-    MyThreadPool pool;
+    ThreadPool pool;
     int count;
 
-    public MyThread(String name, MyThreadPool pool) {
+    public MyThread(String name, ThreadPool pool) {
       super(name);
       this.pool = pool;
     }
@@ -46,25 +46,30 @@ public class Exam0210 {
     }
   }
 
+  // MyThreadPool 과 MyThread 상호간에 참조를 피하기 위해
+  // 인터페이스를 준비했다.
   interface ThreadPool {
     Thread get();
-
     void add(Thread obj);
   }
 
-  static class MyThreadPool implements ThreadPool{
+  static class MyThreadPool implements ThreadPool {
     ArrayList<MyThread> list = new ArrayList<>();
 
     public MyThreadPool() {
-
+      // 사용할 스레드 객체를 미리 생성한다.
+      // - 나중에 MyThread가 Pool로 다시 리턴될 수 있도록
+      //   스레드 객체를 생성할 때 Pool의 주소를 알려준다.
       MyThread t1 = new MyThread("1번 스레드=>", this);
       MyThread t2 = new MyThread("2번 스레드***>", this);
       MyThread t3 = new MyThread("3번 스레드-->", this);
 
+      // 생성된 스레드를 컬렉션에 보관한다.
       list.add(t1);
       list.add(t2);
       list.add(t3);
 
+      // 일단 무조건 스레드를 미리 실행해 놓는다.
       t1.start();
       t2.start();
       t3.start();
