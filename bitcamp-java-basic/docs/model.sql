@@ -7,11 +7,11 @@ DROP TABLE IF EXISTS lms_tchr RESTRICT;
 -- 매니저
 DROP TABLE IF EXISTS lms_mgr RESTRICT;
 
--- 교실
-DROP TABLE IF EXISTS lms_room RESTRICT;
-
 -- 교육과정
 DROP TABLE IF EXISTS lms_lect RESTRICT;
+
+-- 교실
+DROP TABLE IF EXISTS lms_room RESTRICT;
 
 -- 수강신청
 DROP TABLE IF EXISTS lms_appl RESTRICT;
@@ -103,27 +103,11 @@ ALTER TABLE lms_mgr
       mno -- 매니저번호
     );
 
--- 교실
-CREATE TABLE lms_room (
-  rno   INTEGER     NOT NULL COMMENT '교실번호', -- 교실번호
-  cenno INTEGER     NOT NULL COMMENT '지점번호', -- 지점번호
-  title VARCHAR(50) NOT NULL COMMENT '교실명', -- 교실명
-  capa  INTEGER     NOT NULL COMMENT '수용인원' -- 수용인원
-)
-COMMENT '교실';
-
--- 교실
-ALTER TABLE lms_room
-  ADD CONSTRAINT PK_lms_room -- 교실 기본키
-    PRIMARY KEY (
-      rno -- 교실번호
-    );
-
 -- 교육과정
 CREATE TABLE lms_lect (
   lno     INTEGER      NOT NULL COMMENT '교육과정번호', -- 교육과정번호
   title   VARCHAR(255) NOT NULL COMMENT '과정명', -- 과정명
-  content VARCHAR(255) NOT NULL COMMENT '내용', -- 내용
+  content MEDIUMTEXT   NOT NULL COMMENT '내용', -- 내용
   sdt     DATE         NOT NULL COMMENT '시작일', -- 시작일
   edt     DATE         NOT NULL COMMENT '종료일', -- 종료일
   hrs     INTEGER      NOT NULL COMMENT '총강의시간', -- 총강의시간
@@ -139,13 +123,35 @@ ALTER TABLE lms_lect
       lno -- 교육과정번호
     );
 
+ALTER TABLE lms_lect
+  MODIFY COLUMN lno INTEGER NOT NULL AUTO_INCREMENT COMMENT '교육과정번호';
+
+-- 교실
+CREATE TABLE lms_room (
+  rno   INTEGER     NOT NULL COMMENT '교실번호', -- 교실번호
+  cenno INTEGER     NOT NULL COMMENT '지점번호', -- 지점번호
+  title VARCHAR(70) NOT NULL COMMENT '교실명', -- 교실명
+  capa  INTEGER     NOT NULL COMMENT '수용인원' -- 수용인원
+)
+COMMENT '교실';
+
+-- 교실
+ALTER TABLE lms_room
+  ADD CONSTRAINT PK_lms_room -- 교실 기본키
+    PRIMARY KEY (
+      rno -- 교실번호
+    );
+
+ALTER TABLE lms_room
+  MODIFY COLUMN rno INTEGER NOT NULL AUTO_INCREMENT COMMENT '교실번호';
+
 -- 수강신청
 CREATE TABLE lms_appl (
-  ano  INTEGER NOT NULL COMMENT '수강신청번호', -- 수강신청번호
-  uno  INTEGER NOT NULL COMMENT '학생번호', -- 학생번호
-  lno  INTEGER NOT NULL COMMENT '교육과정번호', -- 교육과정번호
-  cdt  DATE    NOT NULL DEFAULT now() COMMENT '신청일', -- 신청일
-  stat INTEGER NULL     DEFAULT 0 COMMENT '상태' -- 상태
+  ano  INTEGER  NOT NULL COMMENT '수강신청번호', -- 수강신청번호
+  sno  INTEGER  NOT NULL COMMENT '학생번호', -- 학생번호
+  lno  INTEGER  NOT NULL COMMENT '교육과정번호', -- 교육과정번호
+  cdt  DATETIME NOT NULL DEFAULT now() COMMENT '신청일', -- 신청일
+  stat INTEGER  NULL     DEFAULT 0 COMMENT '상태' -- 상태
 )
 COMMENT '수강신청';
 
@@ -159,20 +165,23 @@ ALTER TABLE lms_appl
 -- 수강신청 유니크 인덱스
 CREATE UNIQUE INDEX UIX_lms_appl
   ON lms_appl ( -- 수강신청
-    uno ASC, -- 학생번호
+    sno ASC, -- 학생번호
     lno ASC  -- 교육과정번호
   );
+
+ALTER TABLE lms_appl
+  MODIFY COLUMN ano INTEGER NOT NULL AUTO_INCREMENT COMMENT '수강신청번호';
 
 -- 사용자
 CREATE TABLE lms_user (
   uno      INTEGER      NOT NULL COMMENT '사용자번호', -- 사용자번호
-  name     VARCHAR(50)  NOT NULL COMMENT '이름', -- 이름
+  name     VARCHAR(70)  NOT NULL COMMENT '이름', -- 이름
   email    VARCHAR(40)  NOT NULL COMMENT '이메일', -- 이메일
-  pwd      VARCHAR(50)  NOT NULL COMMENT '암호', -- 암호
+  pwd      VARCHAR(120) NOT NULL COMMENT '암호', -- 암호
   jumin    VARCHAR(13)  NOT NULL COMMENT '주민번호', -- 주민번호
   tel      VARCHAR(30)  NOT NULL COMMENT '전화', -- 전화
   ano      INTEGER      NULL     COMMENT '주소번호', -- 주소번호
-  dat_addr VARCHAR(255) NULL     COMMENT '상세주소', -- 상세주소
+  det_addr VARCHAR(255) NULL     COMMENT '상세주소', -- 상세주소
   photo    VARCHAR(255) NULL     COMMENT '사진' -- 사진
 )
 COMMENT '사용자';
@@ -202,10 +211,13 @@ CREATE INDEX IX_lms_user
     name ASC -- 이름
   );
 
+ALTER TABLE lms_user
+  MODIFY COLUMN uno INTEGER NOT NULL AUTO_INCREMENT COMMENT '사용자번호';
+
 -- 학력
 CREATE TABLE lms_edu_level (
   elno  INTEGER     NOT NULL COMMENT '학력번호', -- 학력번호
-  title VARCHAR(50) NOT NULL COMMENT '학력명' -- 학력명
+  title VARCHAR(70) NOT NULL COMMENT '학력명' -- 학력명
 )
 COMMENT '학력';
 
@@ -216,10 +228,19 @@ ALTER TABLE lms_edu_level
       elno -- 학력번호
     );
 
+-- 학력 인덱스
+CREATE INDEX IX_lms_edu_level
+  ON lms_edu_level( -- 학력
+    title ASC -- 학력명
+  );
+
+ALTER TABLE lms_edu_level
+  MODIFY COLUMN elno INTEGER NOT NULL AUTO_INCREMENT COMMENT '학력번호';
+
 -- 학교
 CREATE TABLE lms_school (
   schno INTEGER     NOT NULL COMMENT '학교번호', -- 학교번호
-  title VARCHAR(50) NOT NULL COMMENT '학교명' -- 학교명
+  title VARCHAR(70) NOT NULL COMMENT '학교명' -- 학교명
 )
 COMMENT '학교';
 
@@ -236,10 +257,13 @@ CREATE INDEX IX_lms_school
     title ASC -- 학교명
   );
 
+ALTER TABLE lms_school
+  MODIFY COLUMN schno INTEGER NOT NULL AUTO_INCREMENT COMMENT '학교번호';
+
 -- 전공
 CREATE TABLE lms_major (
   majno INTEGER     NOT NULL COMMENT '전공번호', -- 전공번호
-  title VARCHAR(50) NOT NULL COMMENT '전공명' -- 전공명
+  title VARCHAR(70) NOT NULL COMMENT '전공명' -- 전공명
 )
 COMMENT '전공';
 
@@ -256,10 +280,13 @@ CREATE INDEX IX_lms_major
     title ASC -- 전공명
   );
 
+ALTER TABLE lms_major
+  MODIFY COLUMN majno INTEGER NOT NULL AUTO_INCREMENT COMMENT '전공번호';
+
 -- 지점
 CREATE TABLE lms_center (
   cenno INTEGER     NOT NULL COMMENT '지점번호', -- 지점번호
-  title VARCHAR(50) NOT NULL COMMENT '지점명' -- 지점명
+  title VARCHAR(70) NOT NULL COMMENT '지점명' -- 지점명
 )
 COMMENT '지점';
 
@@ -276,10 +303,13 @@ CREATE INDEX IX_lms_center
     title ASC -- 지점명
   );
 
+ALTER TABLE lms_center
+  MODIFY COLUMN cenno INTEGER NOT NULL AUTO_INCREMENT COMMENT '지점번호';
+
 -- 은행
 CREATE TABLE lms_bank (
   banno INTEGER     NOT NULL COMMENT '은행번호', -- 은행번호
-  title VARCHAR(50) NOT NULL COMMENT '은행명' -- 은행명
+  title VARCHAR(70) NOT NULL COMMENT '은행명' -- 은행명
 )
 COMMENT '은행';
 
@@ -295,6 +325,9 @@ CREATE INDEX IX_lms_bank
   ON lms_bank( -- 은행
     title ASC -- 은행명
   );
+
+ALTER TABLE lms_bank
+  MODIFY COLUMN banno INTEGER NOT NULL AUTO_INCREMENT COMMENT '은행번호';
 
 -- 교육과정강사
 CREATE TABLE lms_tchr_lect (
@@ -326,10 +359,13 @@ ALTER TABLE lms_room_photo
       rpno -- 교실사진번호
     );
 
+ALTER TABLE lms_room_photo
+  MODIFY COLUMN rpno INTEGER NOT NULL AUTO_INCREMENT COMMENT '교실사진번호';
+
 -- 직급
 CREATE TABLE lms_posi (
   pno   INTEGER     NOT NULL COMMENT '직급번호', -- 직급번호
-  title VARCHAR(50) NOT NULL COMMENT '직급명' -- 직급명
+  title VARCHAR(70) NOT NULL COMMENT '직급명' -- 직급명
 )
 COMMENT '직급';
 
@@ -346,11 +382,14 @@ CREATE INDEX IX_lms_posi
     title ASC -- 직급명
   );
 
+ALTER TABLE lms_posi
+  MODIFY COLUMN pno INTEGER NOT NULL AUTO_INCREMENT COMMENT '직급번호';
+
 -- 부서
 CREATE TABLE lms_dept (
   dno   INTEGER     NOT NULL COMMENT '부서번호', -- 부서번호
   cenno INTEGER     NOT NULL COMMENT '지점번호', -- 지점번호
-  title VARCHAR(50) NOT NULL COMMENT '부서명' -- 부서명
+  title VARCHAR(70) NOT NULL COMMENT '부서명' -- 부서명
 )
 COMMENT '부서';
 
@@ -361,10 +400,13 @@ ALTER TABLE lms_dept
       dno -- 부서번호
     );
 
+ALTER TABLE lms_dept
+  MODIFY COLUMN dno INTEGER NOT NULL AUTO_INCREMENT COMMENT '부서번호';
+
 -- 주소
 CREATE TABLE lms_addr (
   ano      INTEGER      NOT NULL COMMENT '주소번호', -- 주소번호
-  dpstno   VARCHAR(6)   NOT NULL COMMENT '우편번호', -- 우편번호
+  pstno    VARCHAR(6)   NOT NULL COMMENT '우편번호', -- 우편번호
   bas_addr VARCHAR(255) NOT NULL COMMENT '기본주소' -- 기본주소
 )
 COMMENT '주소';
@@ -375,6 +417,9 @@ ALTER TABLE lms_addr
     PRIMARY KEY (
       ano -- 주소번호
     );
+
+ALTER TABLE lms_addr
+  MODIFY COLUMN ano INTEGER NOT NULL AUTO_INCREMENT COMMENT '주소번호';
 
 -- 학생
 ALTER TABLE lms_stud
@@ -506,16 +551,6 @@ ALTER TABLE lms_mgr
       dno -- 부서번호
     );
 
--- 교실
-ALTER TABLE lms_room
-  ADD CONSTRAINT FK_lms_center_TO_lms_room -- 지점 -> 교실
-    FOREIGN KEY (
-      cenno -- 지점번호
-    )
-    REFERENCES lms_center ( -- 지점
-      cenno -- 지점번호
-    );
-
 -- 교육과정
 ALTER TABLE lms_lect
   ADD CONSTRAINT FK_lms_mgr_TO_lms_lect -- 매니저 -> 교육과정
@@ -536,14 +571,24 @@ ALTER TABLE lms_lect
       rno -- 교실번호
     );
 
+-- 교실
+ALTER TABLE lms_room
+  ADD CONSTRAINT FK_lms_center_TO_lms_room -- 지점 -> 교실
+    FOREIGN KEY (
+      cenno -- 지점번호
+    )
+    REFERENCES lms_center ( -- 지점
+      cenno -- 지점번호
+    );
+
 -- 수강신청
 ALTER TABLE lms_appl
-  ADD CONSTRAINT FK_lms_user_TO_lms_appl -- 사용자 -> 수강신청
+  ADD CONSTRAINT FK_lms_stud_TO_lms_appl -- 학생 -> 수강신청
     FOREIGN KEY (
-      uno -- 학생번호
+      sno -- 학생번호
     )
-    REFERENCES lms_user ( -- 사용자
-      uno -- 사용자번호
+    REFERENCES lms_stud ( -- 학생
+      sno -- 학생번호
     );
 
 -- 수강신청
