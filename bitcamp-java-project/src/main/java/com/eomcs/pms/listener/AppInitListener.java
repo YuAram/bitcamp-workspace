@@ -42,6 +42,7 @@ import com.eomcs.pms.handler.TaskDetailCommand;
 import com.eomcs.pms.handler.TaskListCommand;
 import com.eomcs.pms.handler.TaskUpdateCommand;
 import com.eomcs.pms.handler.WhoamiCommand;
+import com.eomcs.util.sqlSessionFactoryProxy;
 
 public class AppInitListener implements ApplicationContextListener {
   @Override
@@ -51,8 +52,9 @@ public class AppInitListener implements ApplicationContextListener {
     // 시스템에서 사용할 객체를 준비한다.
     try {
       // Mybatis 객체 준비
-      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(
-          Resources.getResourceAsStream("com/eomcs/pms/conf/mybatis-config.xml"));
+      sqlSessionFactoryProxy sqlSessionFactory = new sqlSessionFactoryProxy(
+          new SqlSessionFactoryBuilder().build(
+          Resources.getResourceAsStream("com/eomcs/pms/conf/mybatis-config.xml")));
 
       // DAO 구현체 생성
       BoardDao boardDao = new BoardDaoImpl(sqlSessionFactory);
@@ -78,9 +80,9 @@ public class AppInitListener implements ApplicationContextListener {
 
       commandMap.put("/project/add", new ProjectAddCommand(projectDao, memberDao));
       commandMap.put("/project/list", new ProjectListCommand(projectDao));
-      commandMap.put("/project/detail", new ProjectDetailCommand(projectDao));
+      commandMap.put("/project/detail", new ProjectDetailCommand(projectDao, taskDao));
       commandMap.put("/project/update", new ProjectUpdateCommand(projectDao, memberDao));
-      commandMap.put("/project/delete", new ProjectDeleteCommand(projectDao, taskDao));
+      commandMap.put("/project/delete", new ProjectDeleteCommand(projectDao, taskDao, sqlSessionFactory));
       commandMap.put("/project/search", new ProjectSearchCommand(projectDao));
       commandMap.put("/project/detailSearch", new ProjectDetailSearchCommand(projectDao));
 

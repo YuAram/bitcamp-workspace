@@ -40,23 +40,6 @@ public class ProjectUpdateCommand implements Command {
       project.setEndDate(Prompt.inputDate(String.format(
           "종료일(%s)? ", project.getEndDate())));
 
-      // 프로젝트에 참여할 회원 정보를 담는다.
-      List<Member> members = new ArrayList<>();
-      while (true) {
-        String name = Prompt.inputString("팀원?(완료: 빈 문자열) ");
-        if (name.length() == 0) {
-          break;
-        } else {
-          Member member = memberDao.findByName(name);
-          if (member == null) {
-            System.out.println("등록된 회원이 아닙니다.");
-            continue;
-          }
-          members.add(member);
-        }
-      }
-      project.setMembers(members);
-
       String response = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
       if (!response.equalsIgnoreCase("y")) {
         System.out.println("프로젝트 변경을 취소하였습니다.");
