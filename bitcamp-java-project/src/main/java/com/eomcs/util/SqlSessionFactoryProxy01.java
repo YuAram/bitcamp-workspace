@@ -12,12 +12,12 @@ import org.apache.ibatis.session.TransactionIsolationLevel;
 // - 이런 객체를 '프록시(proxy)'라 부른다.
 // - 프록시는 반드시 원래 객체와 같은 인터페이스를 구현해야 한다.
 //
-public class SqlSessionFactoryProxy implements SqlSessionFactory {
+public class SqlSessionFactoryProxy01 implements SqlSessionFactory {
   SqlSessionFactory original;
   boolean inTransaction = false; // 트랜잭션이 시작되었다면,
   SqlSessionProxy currentSqlSession;
 
-  public SqlSessionFactoryProxy(SqlSessionFactory original) {
+  public SqlSessionFactoryProxy01(SqlSessionFactory original) {
     // 생성자에서 원래의 구현체를 받아 보관해 둔다.
     this.original = original;
   }

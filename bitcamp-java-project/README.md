@@ -1,266 +1,84 @@
-# 41-b. DB 프로그래밍 더 쉽고 간단히 하는 방법 : Mybatis 기타 기능 활용하기
+### 42. 비즈니스 로직 분리하기 : 서비스 객체의 도입
 
 이번 훈련에서는,
-- 실무에서 자주 쓰이는 *퍼시스턴스 프레임워크* 중에 하나인 **마이바티스** 프레임워크의 사용법을 배울 것이다.
+- *Mybatis* 에서 *트랜잭션* 을 다루는 방법을 배울 것이다.
+- 기존 클래스의 코드를 손대지 않고 일부 기능을 변경하는 **프록시 패턴** 설계 기법을 배운다.
 
-**퍼시스턴스 프레임워크(Persistence Framework)** 는,
-- 데이터의 저장, 조회, 변경, 삭제를 다루는 클래스 및 설정 파일들의 집합이다.(위키백과)
-- JDBC 프로그래밍의 번거로움 없이 간결하게 데이터베이스와 연동할 수 있다.
-- 소스 코드에서 SQL 문을 분리하여 관리한다.
 
-**마이바티스(Mybatis)** 는,
-- *퍼시스턴스 프레임워크* 중의 하나이다.
-- JDBC 프로그래밍을 캡슐화하여 데이터베이스 연동을 쉽게 하도록 도와준다.
-- 자바 소스 파일에서 SQL을 분리하여 별도의 파일로 관리하기 때문에
-  자바 소스 코드를 간결하게 유지할 수 있다.
-- JDBC 프로그래밍 할 때와 마찬가지로 직접 SQL을 다루기 때문에
-  레거시(legacy) 시스템에서 사용하는 데이터베이스와 연동할 때 유리하다.
-- SQL을 통해 데이터베이스와 연동한다고 해서 보통 **SQL 매퍼(mapper)** 라 부른다.
 
 ## 훈련 목표
-- **Mybatis SQL 맵퍼** 의 특징과 동작 원리를 이해한다.
-- Mybatis 퍼시스턴스 프레임워크를 설정하고 다루는 방법을 배운다.
+-
 
 ## 훈련 내용
 -
 
 ## 실습
 
-### 1단계 - fully-qualified class name 에 대해 별명을 부여하기
+### 1단계 - 프로젝트 삭제 Command 객체에서 업무 코드를 분리한다.
 
-- src/main/resources/com/eomcs/pms/conf/mybatis-config.xml 변경
-  - 클래스 이름에 대해 별명을 지정한다.
-```
-<typeAliases>
-  <typeAlias type="com.eomcs.pms.domain.Board" alias="board"/>
-  <typeAlias type="com.eomcs.pms.domain.Member" alias="member"/>
-  <typeAlias type="com.eomcs.pms.domain.Project" alias="project"/>
-  <typeAlias type="com.eomcs.pms.domain.Task" alias="task"/>
-</typeAliases>
-```
-- src/main/resources/com/eomcs/pms/mapper/XxxMapper.xml 변경
-  - 클래스 이름 대신 별명을 사용한다.
+커맨드 객체에서 비즈니스 로직을 분리하여 서비스 객체에 옮긴다.
 
-일부 자바 클래스에서 대해서 미리 별명이 부여되었다.
-- 예)
-  - int -> _int
-  - java.lang.Integer -> int
-  - java.lang.String -> string
-  - java.util.Map -> map
-  - java.util.HashMap -> hashmap
+- com.eomcs.pms.service.ProjectService 인터페이스 생성
+  - 서비스 객체의 메서드 명은 보통 업무 관련 용어를 사용한다.
+  - DAO 객체의 메서드 명은 데이터 관련 용어를 사용한다.
+  - `delete()` 메서드 선언
+- com.eomcs.pms.service.DefaultProjectService 클래스 생성
+  - `delete()` 메서드 구현
+    - `ProjectDeleteCommand` 에서 비즈니스 로직과 관련된 코드를 가져온다.
+- com.eomcs.pms.handler.ProjectDeleteCommand 클래스 변경
+  - `ProjectService` 구현체를 사용하여 프로젝트 삭제 처리
 
-### 2단계 - 특정 패키지에 소속된 전체 클래스에 대해 별명 부여한다.
 
-- src/main/resources/com/eomcs/pms/conf/mybatis-config.xml 변경
-```
-<typeAliases>
-  <package name="com.eomcs.pms.domain"/>
-</typeAliases>
-```
+### 2단계 - 프로젝트 삭제 DAO 객체에서 업무 코드를 분리한다.
 
-### 3단계 - 게시글 검색 기능을 추가한다.
-
-마이바티스의 `if` 태그를 사용하여 동적 SQL을 작성한다.
-
-- 검색어에 해당하는 게시글이 있을 경우,
-```
-명령> /board/search
-검색어? ok
-번호, 제목, 작성자, 등록일, 조회수
-13, okok4, ccc, 2020-11-09, 0
-12, okok2, aaa, 2020-11-09, 0
-8, okok, ggg, 2020-11-05, 0
-```
-
-- 검색어에 해당하는 게시글이 없을 경우,
-```
-명령> /board/search
-검색어? ㅋㅋ
-```
-
-- 검색어를 입력하지 않을 경우
-```
-명령> /board/search
-검색어?
-번호, 제목, 작성자, 등록일, 조회수
-13, okok4, ccc, 2020-11-09, 0
-12, okok2, aaa, 2020-11-09, 0
-10, test, ggg, 2020-11-06, 0
-9, hul..., aaa, 2020-11-05, 0
-8, okok, ggg, 2020-11-05, 0
-```
-
-- src/main/resources/com/eomcs/pms/mapper/BoardMapper.xml 변경
-  - `findAll` SQL 문을 변경한다.
-- com.eomcs.pms.dao.BoardDao 인터페이스 변경
-  - `findAll()` 을 `findAll(String keyword)` 으로 변경한다.
-- com.eomcs.pms.dao.mariadb.BoardDaoImpl 클래스 변경
-  - `findAll(String keyword)` 를 구현한다.
-- com.eomcs.pms.handler.BoardSearchCommand 클래스 생성
-  - `BoardDao.findAll()` 을 사용하여 검색 기능을 처리한다.
-- com.eomcs.pms.listener.AppInitListener 클래스 변경
-  - `/board/search` 를 처리할 `BoardSearchCommand` 객체를 등록한다.
-
-### 4단계 - 프로젝트 검색 기능을 추가한다.
-
-마이바티스의 `if` 태그를 여러 개 사용하여 동적 SQL을 작성한다.
-
-```
-명령> /project/search
-항목(1:프로젝트명, 2:관리자명, 3:팀원, 그 외: 전체)? 1
-검색어? java
-번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원
-21, javajavaxx, 2020-02-02 ~ 2020-03-03, aaa, [ccc,ddd]
-17, java1, 2020-01-01 ~ 2020-02-02, aaa, []
-```
+DAO 객체에서 비즈니스 로직을 분리하여 서비스 객체에 옮긴다.
 
 - com.eomcs.pms.dao.ProjectDao 인터페이스 변경
-  - `findByKeyword(String item, String keyword)` 을 추가한다.
+  - `deleteMembers()` 메서드 선언 추가
 - com.eomcs.pms.dao.mariadb.ProjectDaoImpl 클래스 변경
-  - `findByKeyword(String item, String keyword)` 를 구현한다.
-- src/main/resources/com/eomcs/pms/mapper/ProjectMapper.xml 변경
-  - `findByKeyword` SQL 문을 추가한다.
-```
-<select id="findByKeyword" resultMap="ProjectMap" parameterType="map">
-...
-  <if test="item == 1">
-  where p.title like concat('%', #{keyword}, '%')
-  </if>
-  <if test="item == 2">
-  where m.name like concat('%', #{keyword}, '%')
-  </if>
-  <if test="item == 3">
-  where m2.name like concat('%', #{keyword}, '%')
-  </if>
-</select>
-```
-- com.eomcs.pms.handler.ProjectSearchCommand 클래스 생성
-  - `ProjectDao.findByKeyword()` 을 사용하여 검색 기능을 처리한다.
-- com.eomcs.pms.listener.AppInitListener 클래스 변경
-  - `/project/search` 를 처리할 `ProjectSearchCommand` 객체를 등록한다.
+  - `delete()` 메서드에서 멤버 삭제 관련 코드를 별도의 메서드 `deleteMembers()` 로 분리한다.
+- com.eomcs.pms.service.DefaultProjectService 클래스 변경
+  - `delete()` 메서드 변경
+    - 프로젝트 멤버를 삭제하는 `deleteMembers()` 를 호출한다.
 
+### 3단계 - 프로젝트 등록 커맨드 객체에서 비즈니스 로직을 분리한다.
 
-### 5단계 - 프로젝트 상세 검색 기능을 추가한다.
-
-마이바티스의 `where` 태그를 사용하여 동적 SQL을 작성한다.
-
-```
-명령> /project/detailSearch
-[프로젝트 상세 검색]
-프로젝트명? java
-관리자명? aaa
-팀원? bbb
-번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원
-21, javajavaxx, 2020-02-02 ~ 2020-03-03, aaa, [ccc,ddd]
-17, java1, 2020-01-01 ~ 2020-02-02, aaa, []
-```
-
-- src/main/resources/com/eomcs/pms/mapper/ProjectMapper.xml 변경
-  - `findByDetailKeyword` SQL 문을 추가한다.
 - com.eomcs.pms.dao.ProjectDao 인터페이스 변경
-  - `findByDetailKeyword(Map<String,Object> keywords)` 을 추가한다.
+  - `insertMembers()` 메서드 선언 추가
 - com.eomcs.pms.dao.mariadb.ProjectDaoImpl 클래스 변경
-  - `findByDetailKeyword(String item, String keyword)` 를 구현한다.
-- com.eomcs.pms.handler.ProjectDetailSearchCommand 클래스 생성
-  - `ProjectDao.findByDetailKeyword()` 을 사용하여 검색 기능을 처리한다.
-- com.eomcs.pms.listener.AppInitListener 클래스 변경
-  - `/project/detailSearch` 를 처리할 `ProjectDetailSearchCommand` 객체를 등록한다.
+  - `insert()` 메서드에서 비즈니스 로직을 추출하여 별도의 메서드 `insertMembers()` 로 옮긴다.
+- com.eomcs.pms.service.ProjectService 인터페이스 생성
+  - `add()` 메서드 선언
+- com.eomcs.pms.service.DefaultProjectService 클래스 생성
+  - `add()` 메서드 구현
+    - `ProjectAddCommand` 에서 비즈니스 로직과 관련된 코드를 가져온다.
+- com.eomcs.pms.service.MemberService 인터페이스 생성
+  - `list()` 메서드 선언
+- com.eomcs.pms.service.DefaultMemberService 인터페이스 생성
+  - `list()` 메서드 구현
+- com.eomcs.pms.service.MemberDao 인터페이스 변경
+  - `findByName()` 의 리턴 값을 `List` 객체로 변경한다.
+- com.eomcs.pms.service.MemberDaoImpl 클래스 변경
+  - `findByName()` 의 리턴 값을 `List` 객체로 변경한다.
+- com.eomcs.pms.handler.ProjectAddCommand 클래스 변경
+  - `MemberService` 구현체를 사용하여 멤버 찾기
+  - `ProjectService` 구현체를 사용하여 프로젝트 등록 처리
 
-### 6단계 - 프로젝트 검색 기능의 mybatis 코드를 변경한다.
-
-- 조건에 상호 배타적인 상황에서는 `if` 태그 보다는 `choose` 태그를 사용하는게 낫다.
-- `if` 태그 대신에 `choose` 태그를 사용해보자.
-- src/main/resources/com/eomcs/pms/mapper/ProjectMapper.xml 변경
-```
-<select id="findByKeyword" resultMap="ProjectMap" parameterType="map">
-...
-  <choose>
-    <when test="item == 1">
-    p.title like concat('%', #{keyword}, '%')
-    </when>
-    <when test="item == 2">
-    m.name like concat('%', #{keyword}, '%')
-    </when>
-    <otherwise>
-    m2.name like concat('%', #{keyword}, '%')
-    </otherwise>
-  </choose>
-</select>
-```
-
-### 7단계 - 회원 정보 변경할 때 사용자가 입력한 항목만 변경한다.
-
-마이바티스의 `set` 태그와 `if` 태그를 사용하면,
-`update` SQL 문을 좀 더 유연하게 만들 수 있다.
-
-- 이전 방식은 한 개의 값을 바꾸더라도 모든 항목의 값을 다시 입력해야 했다.
-- 만약 바꾸고 싶은 값만 입력한다면 나머지 값은 빈 문자열이 되었다.
-```
-명령> /member/update
-[회원 변경]
-번호? 14
-이름(12)?    <--- 입력 안함
-이메일(12)? 13@test.com
-암호?     <--- 입력 안함
-사진(12)?     <--- 입력 안함
-전화(12)? 3333
-정말 변경하시겠습니까?(y/N) y
-회원을 변경하였습니다.
-
-명령> /member/detail
-[회원 상세보기]
-번호? 14
-이름:     <--- 입력 안한 값은 빈 문자열이 들어간다.
-이메일: 13@test.com
-사진:     <--- 입력 안한 값은 빈 문자열이 들어간다.
-전화: 3333
-등록일: 2020-11-06
-
-```
-
-- 새 방식은 변경할 값만 입력한다.
-- 그리고 입력한 값만 변경된다.
-
-```
-명령> /member/update
-[회원 변경]
-번호? 12
-이름(x4)?     <--- 입력 안한 값은 기존 값을 그대로 둔다.
-이메일(x4@test.com)? hhh@test.com
-암호?    <--- 입력 안한 값은 기존 값을 그대로 둔다.
-사진(x4.gif)?     <--- 입력 안한 값은 기존 값을 그대로 둔다.
-전화(1111)? 1255
-정말 변경하시겠습니까?(y/N) y
-회원을 변경하였습니다.
-
-명령> /member/detail
-[회원 상세보기]
-번호? 12
-이름: x4    <--- 입력 안한 값은 그대로다.
-이메일: hhh@test.com
-사진: x4.gif   <--- 입력 안한 값은 그대로다.
-전화: 1255
-등록일: 2020-11-05
-```
 
 
 
 ## 실습 결과
-- src/main/resources/com/eomcs/pms/conf/mybatis-config.xml 변경
-- src/main/resources/com/eomcs/pms/mapper/BoardMapper.xml 생성
-- src/main/resources/com/eomcs/pms/mapper/MemberMapper.xml 생성
-- src/main/resources/com/eomcs/pms/mapper/ProjectMapper.xml 생성
+
 - src/main/resources/com/eomcs/pms/mapper/TaskMapper.xml 생성
-- src/main/java/com/eomcs/pms/dao/BoardDao.java 변경
-- src/main/java/com/eomcs/pms/dao/mariadb/BoardDaoImpl.java 변경
-- src/main/java/com/eomcs/pms/handler/BoardSearchCommand.java 변경
-- src/main/java/com/eomcs/pms/dao/mariadb/MemberDaoImpl.java 변경
-- src/main/java/com/eomcs/pms/dao/ProjectDao.java 변경
-- src/main/java/com/eomcs/pms/dao/mariadb/ProjectDaoImpl.java 변경
-- src/main/java/com/eomcs/pms/handler/ProjectSearchCommand.java 변경
-- src/main/java/com/eomcs/pms/handler/ProjectDetailSearchCommand.java 변경
--
 - src/main/java/com/eomcs/pms/dao/TaskDao.java 변경
 - src/main/java/com/eomcs/pms/dao/mariadb/TaskDaoImpl.java 변경
+- src/main/java/com/eomcs/pms/dao/mariadb/ProjectDaoImpl.java 변경
+- src/main/java/com/eomcs/pms/dao/mariadb/BoardDaoImpl.java 변경
+- src/main/java/com/eomcs/pms/dao/mariadb/MemberDaoImpl.java 변경
+- src/main/java/com/eomcs/pms/handler/TaskListCommand.java 변경
+- src/main/java/com/eomcs/pms/handler/ProjectDetailCommand.java 변경
+- src/main/java/com/eomcs/pms/handler/ProjectDeleteCommand.java 변경
+- src/main/java/com/eomcs/pms/handler/ProjectUpdateCommand.java 변경
+- src/main/java/com/eomcs/util/SqlSessionProxy.java 생성
+- src/main/java/com/eomcs/util/SqlSessionFactoryProxy.java 생성
 - src/main/java/com/eomcs/pms/listener/AppInitListener.java 변경
-- src/main/java/com/eomcs/pms/App.java 변경

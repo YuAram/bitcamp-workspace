@@ -54,7 +54,7 @@
       inner join pms_project p on t.project_no=p.no
     where t.no = #{taskNo}
   </select>
-  
+
   <insert id="insert" parameterType="task">
     insert into pms_task(content,deadline,owner,project_no,status)
     values(#{content},#{deadline},#{owner.no},#{projectNo},#{status})

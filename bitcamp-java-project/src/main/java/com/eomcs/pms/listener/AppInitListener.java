@@ -3,7 +3,6 @@ package com.eomcs.pms.listener;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.eomcs.context.ApplicationContextListener;
 import com.eomcs.pms.dao.BoardDao;
@@ -42,7 +41,13 @@ import com.eomcs.pms.handler.TaskDetailCommand;
 import com.eomcs.pms.handler.TaskListCommand;
 import com.eomcs.pms.handler.TaskUpdateCommand;
 import com.eomcs.pms.handler.WhoamiCommand;
-import com.eomcs.util.sqlSessionFactoryProxy;
+import com.eomcs.pms.service.DefaultMemberService;
+import com.eomcs.pms.service.DefaultProjectService;
+import com.eomcs.pms.service.DefaultTaskService;
+import com.eomcs.pms.service.MemberService;
+import com.eomcs.pms.service.ProjectService;
+import com.eomcs.pms.service.TaskService;
+import com.eomcs.util.SqlSessionFactoryProxy;
 
 public class AppInitListener implements ApplicationContextListener {
   @Override
@@ -52,15 +57,20 @@ public class AppInitListener implements ApplicationContextListener {
     // 시스템에서 사용할 객체를 준비한다.
     try {
       // Mybatis 객체 준비
-      sqlSessionFactoryProxy sqlSessionFactory = new sqlSessionFactoryProxy(
+      SqlSessionFactoryProxy sqlSessionFactory = new SqlSessionFactoryProxy(
           new SqlSessionFactoryBuilder().build(
-          Resources.getResourceAsStream("com/eomcs/pms/conf/mybatis-config.xml")));
+              Resources.getResourceAsStream("com/eomcs/pms/conf/mybatis-config.xml")));
 
       // DAO 구현체 생성
       BoardDao boardDao = new BoardDaoImpl(sqlSessionFactory);
       MemberDao memberDao = new MemberDaoImpl(sqlSessionFactory);
       ProjectDao projectDao = new ProjectDaoImpl(sqlSessionFactory);
       TaskDao taskDao = new TaskDaoImpl(sqlSessionFactory);
+
+      // Service 구현체 생성
+      MemberService memberService = new DefaultMemberService(memberDao);
+      ProjectService projectService = new DefaultProjectService(taskDao, projectDao, sqlSessionFactory);
+      TaskService taskService = new DefaultTaskService(taskDao);
 
       // Command 구현체 생성 및 commandMap 객체 준비
       Map<String,Command> commandMap = new HashMap<>();
@@ -78,13 +88,13 @@ public class AppInitListener implements ApplicationContextListener {
       commandMap.put("/member/update", new MemberUpdateCommand(memberDao));
       commandMap.put("/member/delete", new MemberDeleteCommand(memberDao));
 
-      commandMap.put("/project/add", new ProjectAddCommand(projectDao, memberDao));
-      commandMap.put("/project/list", new ProjectListCommand(projectDao));
-      commandMap.put("/project/detail", new ProjectDetailCommand(projectDao, taskDao));
-      commandMap.put("/project/update", new ProjectUpdateCommand(projectDao, memberDao));
-      commandMap.put("/project/delete", new ProjectDeleteCommand(projectDao, taskDao, sqlSessionFactory));
-      commandMap.put("/project/search", new ProjectSearchCommand(projectDao));
-      commandMap.put("/project/detailSearch", new ProjectDetailSearchCommand(projectDao));
+      commandMap.put("/project/add", new ProjectAddCommand(projectService, memberService));
+      commandMap.put("/project/list", new ProjectListCommand(projectService));
+      commandMap.put("/project/detail", new ProjectDetailCommand(projectService, taskService));
+      commandMap.put("/project/update", new ProjectUpdateCommand(projectService));
+      commandMap.put("/project/delete", new ProjectDeleteCommand(projectService));
+      commandMap.put("/project/search", new ProjectSearchCommand(projectService));
+      commandMap.put("/project/detailSearch", new ProjectDetailSearchCommand(projectService));
 
       commandMap.put("/task/add", new TaskAddCommand(taskDao, projectDao, memberDao));
       commandMap.put("/task/list", new TaskListCommand(taskDao));
