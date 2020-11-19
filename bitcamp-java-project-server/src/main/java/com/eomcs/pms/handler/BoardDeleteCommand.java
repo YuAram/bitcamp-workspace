@@ -16,9 +16,8 @@ public class BoardDeleteCommand implements Command {
 
   @Override
   public void execute(PrintWriter out, BufferedReader in) {
-    out.println("[게시물 삭제]");
-
     try {
+      out.println("[게시물 삭제]");
       int no = Prompt.inputInt("번호? ", out, in);
       int index = indexOf(no);
 
@@ -35,8 +34,9 @@ public class BoardDeleteCommand implements Command {
 
       boardList.remove(index);
       out.println("게시글을 삭제하였습니다.");
+
     } catch (Exception e) {
-      out.printf("작업 처리 중 오류 발생 !- %s\n", e.getMessage());
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
     }
   }
 

@@ -2,13 +2,12 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import java.util.Map;
-import com.eomcs.pms.dao.MemberDao;
-import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.service.ProjectService;
 import com.eomcs.util.Prompt;
 
 public class ProjectUpdateCommand implements Command {
+
   ProjectService projectService;
 
   public ProjectUpdateCommand(ProjectService projectService) {
@@ -32,21 +31,21 @@ public class ProjectUpdateCommand implements Command {
       if (value.length() > 0) {
         project.setTitle(value);
       }
- 
+
       value = Prompt.inputString(String.format(
           "내용(%s)? ", project.getContent()));
       if (value.length() > 0) {
         project.setContent(value);
       }
-      
+
       value = Prompt.inputString(String.format(
-          "시작일(%s)", project.getStartDate()));
+          "시작일(%s)? ", project.getStartDate()));
       if (value.length() > 0) {
         project.setStartDate(Date.valueOf(value));
       }
-      
+
       value = Prompt.inputString(String.format(
-          "종료일(%s)", project.getEndDate()));
+          "종료일(%s)? ", project.getEndDate()));
       if (value.length() > 0) {
         project.setEndDate(Date.valueOf(value));
       }

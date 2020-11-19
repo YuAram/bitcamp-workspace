@@ -19,9 +19,8 @@ public class ProjectUpdateCommand implements Command {
 
   @Override
   public void execute(PrintWriter out, BufferedReader in) {
-    out.println("[프로젝트 변경]");
-
     try {
+      out.println("[프로젝트 변경]");
       int no = Prompt.inputInt("번호? ", out, in);
       Project project = findByNo(no);
 
@@ -83,8 +82,9 @@ public class ProjectUpdateCommand implements Command {
       project.setMembers(members.toString());
 
       out.println("프로젝트를 변경하였습니다.");
+
     } catch (Exception e) {
-      out.printf("작업 처리 중 오류 발생 !- %s\n", e.getMessage());
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
     }
   }
 

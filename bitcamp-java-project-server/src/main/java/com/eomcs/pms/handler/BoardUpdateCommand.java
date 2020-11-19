@@ -16,8 +16,8 @@ public class BoardUpdateCommand implements Command {
 
   @Override
   public void execute(PrintWriter out, BufferedReader in) {
-    out.println("[게시물 변경]");
     try {
+      out.println("[게시물 변경]");
       int no = Prompt.inputInt("번호? ", out, in);
       Board board = findByNo(no);
 
@@ -43,8 +43,9 @@ public class BoardUpdateCommand implements Command {
       board.setContent(content);
       board.setWriter(writer);
       out.println("게시글을 변경하였습니다.");
+
     } catch (Exception e) {
-      out.printf("작업 처리 중 오류 발생 !- %s\n", e.getMessage());
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
     }
   }
 

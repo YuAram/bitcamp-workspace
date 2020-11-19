@@ -19,9 +19,8 @@ public class TaskUpdateCommand implements Command {
 
   @Override
   public void execute(PrintWriter out, BufferedReader in) {
-    out.println("[작업 변경]");
-
     try {
+      out.println("[작업 변경]");
       int no = Prompt.inputInt("번호? ", out, in);
       Task task = findByNo(no);
 
@@ -75,8 +74,9 @@ public class TaskUpdateCommand implements Command {
       task.setOwner(owner);
 
       out.println("작업을 변경하였습니다.");
+
     } catch (Exception e) {
-      out.printf("작업 처리 중 오류 발생 !- %s\n", e.getMessage());
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
     }
   }
 

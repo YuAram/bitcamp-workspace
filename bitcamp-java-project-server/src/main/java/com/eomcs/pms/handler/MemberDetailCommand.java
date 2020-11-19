@@ -16,8 +16,8 @@ public class MemberDetailCommand implements Command {
 
   @Override
   public void execute(PrintWriter out, BufferedReader in) {
-    out.println("[회원 상세보기]");
     try {
+      out.println("[회원 상세보기]");
       int no = Prompt.inputInt("번호? ", out, in);
       Member member = findByNo(no);
 
@@ -31,8 +31,9 @@ public class MemberDetailCommand implements Command {
       out.printf("사진: %s\n", member.getPhoto());
       out.printf("전화: %s\n", member.getTel());
       out.printf("등록일: %s\n", member.getRegisteredDate());
+
     } catch (Exception e) {
-      out.printf("작업 처리 중 오류 발생 !- %s\n", e.getMessage());
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
     }
   }
 

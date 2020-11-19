@@ -18,9 +18,9 @@ public class ProjectAddCommand implements Command {
 
   @Override
   public void execute(PrintWriter out, BufferedReader in) {
-    out.println("[프로젝트 등록]");
-
     try {
+      out.println("[프로젝트 등록]");
+
       Project project = new Project();
       project.setNo(Prompt.inputInt("번호? ", out, in));
       project.setTitle(Prompt.inputString("프로젝트명? ", out, in));
@@ -60,8 +60,9 @@ public class ProjectAddCommand implements Command {
       project.setMembers(members.toString());
 
       projectList.add(project);
+
     } catch (Exception e) {
-      out.printf("작업 처리 중 오류 발생 !- %s\n", e.getMessage());
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
     }
   }
 }

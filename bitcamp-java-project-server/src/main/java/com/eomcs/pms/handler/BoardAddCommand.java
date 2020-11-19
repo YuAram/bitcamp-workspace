@@ -18,9 +18,9 @@ public class BoardAddCommand implements Command {
 
   @Override
   public void execute(PrintWriter out, BufferedReader in) {
-    out.println("[게시물 등록]");
-
     try {
+      out.println("[게시물 등록]");
+
       Board board = new Board();
       board.setNo(Prompt.inputInt("번호? ", out, in));
       board.setTitle(Prompt.inputString("제목? ", out, in));
@@ -32,8 +32,9 @@ public class BoardAddCommand implements Command {
       boardList.add(board);
 
       out.println("게시글을 등록하였습니다.");
-    } catch (Exception e) {
-      out.printf("작업 처리 중 오류 발생 !- %s\n", e.getMessage());
+
+    } catch(Exception e) {
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
     }
   }
 }

@@ -9,15 +9,16 @@ import com.eomcs.pms.service.TaskService;
 import com.eomcs.util.Prompt;
 
 public class ProjectDetailCommand implements Command {
-    ProjectService projectService;
-    TaskService taskService;
 
-    public ProjectDetailCommand(
-        ProjectService projectService,
-        TaskService taskService) {
-      this.projectService = projectService;
-      this.taskService = taskService;
-    }
+  ProjectService projectService;
+  TaskService taskService;
+
+  public ProjectDetailCommand(
+      ProjectService projectService,
+      TaskService taskService) {
+    this.projectService = projectService;
+    this.taskService = taskService;
+  }
 
   @Override
   public void execute(Map<String,Object> context) {

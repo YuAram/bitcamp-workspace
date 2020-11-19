@@ -18,9 +18,9 @@ public class TaskAddCommand implements Command {
 
   @Override
   public void execute(PrintWriter out, BufferedReader in) {
-    out.println("[작업 등록]");
-
     try {
+      out.println("[작업 등록]");
+
       Task task = new Task();
       task.setNo(Prompt.inputInt("번호? ", out, in));
       task.setContent(Prompt.inputString("내용? ", out, in));
@@ -42,8 +42,9 @@ public class TaskAddCommand implements Command {
       }
 
       taskList.add(task);
+
     } catch (Exception e) {
-      out.printf("작업 처리 중 오류 발생 !- %s\n", e.getMessage());
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
     }
   }
 }

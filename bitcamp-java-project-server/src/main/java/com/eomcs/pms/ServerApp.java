@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import com.eomcs.context.ApplicationContextListener;
 import com.eomcs.pms.handler.Command;
 import com.eomcs.pms.listener.AppInitListener;
@@ -21,6 +24,9 @@ public class ServerApp {
   // 클라이언트가 "stop" 명령을 보내면 이 값이 true로 변경된다.
   // - 이 값이 true 이면 다음 클라이언트 접속할 때 서버를 종료한다.
   static boolean stop = false;
+
+  // 스레드풀 준비
+  ExecutorService threadPool = Executors.newCachedThreadPool();
 
   // 옵저버와 공유할 맵 객체
   static Map<String,Object> context = new Hashtable<>();
@@ -65,8 +71,8 @@ public class ServerApp {
         if (stop) {
           break;
         }
-        // 람다 문법 사용
-        new Thread(() -> handleClient(clientSocket)).start();
+        // 직접 스레드를 생성하는 것이 아니라 스레드풀에 작업을 맡긴다.
+        threadPool.execute(() -> handleClient(clientSocket));
       }
 
     } catch (Exception e) {
@@ -74,6 +80,31 @@ public class ServerApp {
     }
 
     notifyApplicationContextListenerOnServiceStopped();
+
+    // 스레드풀을 종료한다.
+    threadPool.shutdown();
+
+    try {
+      // 스레드풀의 모든 스레드가 종료될 때까지 기다린다.
+      if (!threadPool.awaitTermination(10, TimeUnit.SECONDS)) {
+        System.out.println("아직 종료 안된 작업이 있다.");
+        System.out.println("남아 있는 작업의 강제 종료를 시도하겠다.");
+        // => 만약 10초가 경과될 때까지 종료되지 않으면,
+        //    수행 중인 작업을 강제 종료하라고 지시하고,
+        //    대기 중인 작업은 취소한다.
+        threadPool.shutdownNow();
+
+        // 그리고 다시 작업이 종료될 때까지 기다린다.
+        if (!threadPool.awaitTermination(5, TimeUnit.SECONDS)) {
+          System.out.println("스레드풀의 강제 종료를 완료하지 못했다.");
+        } else {
+          System.out.println("모든 작업을 강제 종료했다.");
+        }
+      }
+    } catch (Exception e) {
+      System.out.println("스레드풀 종료 중 오류 발생!");
+    }
+    System.out.println("서버 종료!");
   }
 
   public static void main(String[] args) {
@@ -101,7 +132,7 @@ public class ServerApp {
 
       if (request.equalsIgnoreCase("stop")) {
         stop = true; // 서버의 상태를 멈추라는 의미로 true로 설정한다.
-        out.println("서버를 종료하는 중 입니다!");
+        out.println("서버를 종료하는 중입니다!");
         out.println();
         out.flush();
         return;

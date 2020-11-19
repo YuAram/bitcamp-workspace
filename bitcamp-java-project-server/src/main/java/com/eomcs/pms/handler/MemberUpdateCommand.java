@@ -16,9 +16,8 @@ public class MemberUpdateCommand implements Command {
 
   @Override
   public void execute(PrintWriter out, BufferedReader in) {
-    out.println("[회원 변경]");
-
     try {
+      out.println("[회원 변경]");
       int no = Prompt.inputInt("번호? ", out, in);
       Member member = findByNo(no);
 
@@ -31,7 +30,7 @@ public class MemberUpdateCommand implements Command {
           String.format("이름(%s)? ", member.getName()), out, in);
       String email = Prompt.inputString(
           String.format("이메일(%s)? ", member.getEmail()), out, in);
-      String password = Prompt.inputString("암호? ");
+      String password = Prompt.inputString("암호? ", out, in);
       String photo = Prompt.inputString(
           String.format("사진(%s)? ", member.getPhoto()), out, in);
       String tel = Prompt.inputString(
@@ -50,8 +49,9 @@ public class MemberUpdateCommand implements Command {
       member.setTel(tel);
 
       out.println("회원을 변경하였습니다.");
+
     } catch (Exception e) {
-      out.printf("작업 처리 중 오류 발생 !- %s\n", e.getMessage());
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
     }
   }
 
