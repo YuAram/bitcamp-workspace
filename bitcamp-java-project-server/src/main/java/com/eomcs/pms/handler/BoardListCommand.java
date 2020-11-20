@@ -1,23 +1,31 @@
 package com.eomcs.pms.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.pms.service.BoardService;
 
 @CommandAnno("/board/list")
-public class BoardListCommand implements Command {
+public class BoardListCommand extends GenericServlet {
 
-  BoardService boardService;
-
-  public BoardListCommand(BoardService boardService) {
-    this.boardService = boardService;
-  }
-
+  private static final long serialVersionUID = 1L;
 
   @Override
-  public void execute(Request request) {
-    PrintWriter out = request.getWriter();
+  public void service(ServletRequest request, ServletResponse response)
+      throws ServletException, IOException {
+    
+    ServletContext ctx = request.getServletContext();
+    BoardService boardService = 
+        (BoardService) ctx.getAttribute("boardService");
+    
+    response.setContentType("text/plain;charset=UTF-8");
+    PrintWriter out = response.getWriter();
 
     try {
       out.println("[게시물 목록]");
@@ -38,6 +46,7 @@ public class BoardListCommand implements Command {
       out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
       e.printStackTrace();
     }
+    
   }
 
 }
