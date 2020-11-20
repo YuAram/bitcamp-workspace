@@ -15,6 +15,7 @@ public class HelloCommand implements Servlet {
   public void service(ServletRequest request, ServletResponse response)
     throws ServletException, IOException {
    
+    response.setContentType("text/plain;charset=UTF-8");
     PrintWriter out = response.getWriter();
 
     out.println("안녕하세요!");
