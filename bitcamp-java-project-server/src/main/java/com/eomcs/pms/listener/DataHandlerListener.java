@@ -39,13 +39,13 @@ public class DataHandlerListener implements ApplicationContextListener {
       MemberDao memberDao = new MemberDaoImpl(sqlSessionFactory);
       ProjectDao projectDao = new ProjectDaoImpl(sqlSessionFactory);
       TaskDao taskDao = new TaskDaoImpl(sqlSessionFactory);
-      
-      // 서비스 객체 생성
+
+      // Service 구현체 생성
       BoardService boardService = new DefaultBoardService(boardDao);
       MemberService memberService = new DefaultMemberService(memberDao);
       ProjectService projectService = new DefaultProjectService(taskDao, projectDao, sqlSessionFactory);
       TaskService taskService = new DefaultTaskService(taskDao);
-      
+
       // 다른 객체가 사용할 수 있도록 context 맵 보관소에 저장해둔다.
       context.put("boardService", boardService);
       context.put("memberService", memberService);

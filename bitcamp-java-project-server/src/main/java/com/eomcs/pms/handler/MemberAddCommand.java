@@ -2,8 +2,6 @@ package com.eomcs.pms.handler;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Map;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.service.MemberService;
 import com.eomcs.util.Prompt;
@@ -17,9 +15,12 @@ public class MemberAddCommand implements Command {
   }
 
   @Override
-  public void execute(PrintWriter out, BufferedReader in, Map<String,Object> context) {
-    out.println("[회원 등록]");
+  public void execute(Request request) {
+    PrintWriter out = request.getWriter();
+    BufferedReader in = request.getReader();
+
     try {
+      out.println("[회원 등록]");
 
       Member member = new Member();
       member.setName(Prompt.inputString("이름? ", out, in));
@@ -29,10 +30,10 @@ public class MemberAddCommand implements Command {
       member.setTel(Prompt.inputString("전화? ", out, in));
 
       memberService.add(member);
-      out.println("회원을 등록하였습니다.");
+      System.out.println("회원을 등록하였습니다.");
 
     } catch (Exception e) {
-      out.println("회원 등록 중 오류 발생!");
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
       e.printStackTrace();
     }
   }
