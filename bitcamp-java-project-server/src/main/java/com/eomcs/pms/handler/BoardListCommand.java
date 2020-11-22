@@ -8,22 +8,22 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.pms.service.BoardService;
 
-@CommandAnno("/board/list")
+@WebServlet("/board/list")
 public class BoardListCommand extends GenericServlet {
-
   private static final long serialVersionUID = 1L;
 
   @Override
   public void service(ServletRequest request, ServletResponse response)
       throws ServletException, IOException {
-    
+
     ServletContext ctx = request.getServletContext();
-    BoardService boardService = 
+    BoardService boardService =
         (BoardService) ctx.getAttribute("boardService");
-    
+
     response.setContentType("text/plain;charset=UTF-8");
     PrintWriter out = response.getWriter();
 
@@ -46,7 +46,6 @@ public class BoardListCommand extends GenericServlet {
       out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
       e.printStackTrace();
     }
-    
   }
 
 }

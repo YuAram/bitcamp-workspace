@@ -1,6 +1,5 @@
 package com.eomcs.pms.listener;
 
-import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -49,8 +48,9 @@ public class DataHandlerListener implements ServletContextListener {
       ProjectService projectService = new DefaultProjectService(taskDao, projectDao, sqlSessionFactory);
       TaskService taskService = new DefaultTaskService(taskDao);
 
+      // 다른 객체가 사용할 수 있도록 context 맵 보관소에 저장해둔다.
       ServletContext ctx = sce.getServletContext();
-      
+
       ctx.setAttribute("boardService", boardService);
       ctx.setAttribute("memberService", memberService);
       ctx.setAttribute("projectService", projectService);
@@ -62,7 +62,4 @@ public class DataHandlerListener implements ServletContextListener {
     }
   }
 
-  @Override
-  public void contextDestroyed(ServletContextEvent sce) {
-  }
 }
