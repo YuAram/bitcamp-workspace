@@ -34,6 +34,7 @@
     <listener-class>com.eomcs.web.ex02.Listener01</listener-class>
   </listener>
 -->
+  
 <!-- 필터 등록 -->
 <!--
   <filter>
@@ -49,35 +50,35 @@
   </filter-mapping>
 -->
 <!-- 서블릿 등록 -->
-<!--
   <servlet>
     <servlet-name>s01</servlet-name>
     <servlet-class>com.eomcs.web.ex01.Servlet01</servlet-class>
   </servlet>
-  <servlet>
-    <servlet-name>Servlet02</servlet-name>
-    <servlet-class>com.eomcs.web.ex01.Servlet02</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>Servlet03</servlet-name>
-    <servlet-class>com.eomcs.web.ex01.Servlet03</servlet-class>
-  </servlet>
--->
-<!-- 서블릿을 실행할 때 사용할 URL path를 설정 -->
-<!--
+  
+  <!-- 서블릿을 실행할 때 사용할 URL path를 설정 -->
   <servlet-mapping>
     <servlet-name>s01</servlet-name>
     <url-pattern>/ohora/haha</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  
+  <servlet>
+    <servlet-name>Servlet02</servlet-name>
+    <servlet-class>com.eomcs.web.ex01.Servlet02</servlet-class>
+  </servlet>
+    <servlet-mapping>
     <servlet-name>Servlet02</servlet-name>
     <url-pattern>/ex01/s02</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>Servlet03</servlet-name>
+    <servlet-class>com.eomcs.web.ex01.Servlet03</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>Servlet03</servlet-name>
     <url-pattern>/ex01/s03</url-pattern>
   </servlet-mapping>  
--->
+  
   <!--  
   <servlet>
     <servlet-name>ex04.Servlet05</servlet-name>
