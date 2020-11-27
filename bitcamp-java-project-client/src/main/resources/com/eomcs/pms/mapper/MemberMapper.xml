@@ -19,8 +19,7 @@
       no, 
       name, 
       email, 
-      tel,
-      photo,
+      tel, 
       cdt
     from 
       pms_member
