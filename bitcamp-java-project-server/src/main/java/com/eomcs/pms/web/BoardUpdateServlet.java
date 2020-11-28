@@ -33,7 +33,7 @@ public class BoardUpdateServlet extends HttpServlet {
     out.println("<html>");
     out.println("<head>");
     out.println("<meta http-equiv='Refresh' content='1;url=list'>");
-    out.println("<title>게시글변경</title></head>");
+    out.println("<title>게시글 변경</title></head>");
     out.println("<body>");
     try {
       out.println("<h1>게시물 변경</h1>");

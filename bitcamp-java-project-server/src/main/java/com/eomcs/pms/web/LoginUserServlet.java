@@ -26,7 +26,7 @@ public class LoginUserServlet extends HttpServlet {
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");
-    out.println("<head><title>로그인사용자</title></head>");
+    out.println("<head><title>로그인 사용자</title></head>");
     out.println("<body>");
 
     out.println("<h1>로그인 사용자</h1>");
