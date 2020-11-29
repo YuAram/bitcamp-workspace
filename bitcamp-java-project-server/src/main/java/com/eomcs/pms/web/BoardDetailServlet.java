@@ -32,7 +32,7 @@ public class BoardDetailServlet extends HttpServlet {
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");
-    out.println("<head><title>게시글 조회</title></head>");
+    out.println("<head><title>게시글조회</title></head>");
     out.println("<body>");
     try {
       out.println("<h1>게시물 조회</h1>");
