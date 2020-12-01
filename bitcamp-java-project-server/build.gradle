@@ -12,7 +12,10 @@ repositories {
 dependencies {
 
     compile 'javax.servlet:javax.servlet-api:4.0.1'
-    
+  
+    // Thumbnailator 썸네일 생성 라이브러리
+    implementation 'net.coobird:thumbnailator:0.4.13'
+      
     // Mybatis 퍼시스턴스 프레임워크
     implementation 'org.mybatis:mybatis:3.5.6'
 
