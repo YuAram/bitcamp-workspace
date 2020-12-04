@@ -23,7 +23,7 @@ public class AuthFilter implements Filter {
       ServletResponse response,
       FilterChain chain)
           throws IOException, ServletException {
-
+    System.out.println("AuthFilter 실행!");
     HttpServletRequest httpRequest = (HttpServletRequest) request;
     HttpServletResponse httpResponse = (HttpServletResponse) response;
 
@@ -40,7 +40,7 @@ public class AuthFilter implements Filter {
     } else {
       ServletContext servletContext = request.getServletContext();
       String contextRootPath = servletContext.getContextPath();
-      httpResponse.sendRedirect(contextRootPath + "/auth/login.html");
+      httpResponse.sendRedirect(contextRootPath + "/auth/login");
     }
   }
 
