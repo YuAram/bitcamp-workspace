@@ -12,6 +12,8 @@ repositories {
 dependencies {
 
     compile 'javax.servlet:javax.servlet-api:4.0.1'
+    
+    implementation 'jstl:jstl:1.2'
   
     // Thumbnailator 썸네일 생성 라이브러리
     implementation 'net.coobird:thumbnailator:0.4.13'
