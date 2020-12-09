@@ -1,16 +1,22 @@
 package com.eomcs.pms.web;
 
 import java.io.IOException;
+<<<<<<< HEAD
+=======
 import java.io.PrintWriter;
 import java.util.List;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+<<<<<<< HEAD
+=======
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import com.eomcs.pms.service.MemberService;
 import com.eomcs.pms.service.ProjectService;
 
@@ -27,6 +33,19 @@ public class ProjectDetailServlet extends HttpServlet {
     MemberService memberService = (MemberService) ctx.getAttribute("memberService");
 
     response.setContentType("text/html;charset=UTF-8");
+<<<<<<< HEAD
+
+    try {
+      int no = Integer.parseInt(request.getParameter("no"));
+      request.setAttribute("project", projectService.get(no));
+      request.setAttribute("members", memberService.list());
+      request.getRequestDispatcher("/project/detail.jsp").include(request, response);
+
+    } catch (Exception e) {
+      request.setAttribute("exception", e);
+      request.getRequestDispatcher("/error.jsp").forward(request, response);
+    }
+=======
     PrintWriter out = response.getWriter();
 
     out.println("<!DOCTYPE html>");
@@ -109,5 +128,6 @@ public class ProjectDetailServlet extends HttpServlet {
       }
     }
     return "";
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
   }
 }

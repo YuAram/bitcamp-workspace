@@ -1,7 +1,10 @@
 package com.eomcs.pms.web;
 
 import java.io.IOException;
+<<<<<<< HEAD
+=======
 import java.io.PrintWriter;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +27,18 @@ public class MemberDetailServlet extends HttpServlet {
         (MemberService) ctx.getAttribute("memberService");
 
     response.setContentType("text/html;charset=UTF-8");
+<<<<<<< HEAD
+    try {
+      int no = Integer.parseInt(request.getParameter("no"));
+      Member member = memberService.get(no);
+      request.setAttribute("member", member);
+      request.getRequestDispatcher("/member/detail.jsp").include(request, response);
+
+    } catch (Exception e) {
+      request.setAttribute("exception", e);
+      request.getRequestDispatcher("/error.jsp").forward(request, response);
+    }
+=======
     PrintWriter out = response.getWriter();
 
     out.println("<!DOCTYPE html>");
@@ -79,5 +94,6 @@ public class MemberDetailServlet extends HttpServlet {
 
     out.println("</body>");
     out.println("</html>");
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
   }
 }

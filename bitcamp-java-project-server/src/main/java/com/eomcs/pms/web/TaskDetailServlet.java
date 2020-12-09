@@ -1,15 +1,21 @@
 package com.eomcs.pms.web;
 
 import java.io.IOException;
+<<<<<<< HEAD
+=======
 import java.io.PrintWriter;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+<<<<<<< HEAD
+=======
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import com.eomcs.pms.domain.Task;
 import com.eomcs.pms.service.ProjectService;
 import com.eomcs.pms.service.TaskService;
@@ -27,6 +33,22 @@ public class TaskDetailServlet extends HttpServlet {
     TaskService taskService = (TaskService) ctx.getAttribute("taskService");
 
     response.setContentType("text/html;charset=UTF-8");
+<<<<<<< HEAD
+    try {
+      int no = Integer.parseInt(request.getParameter("no"));
+      Task task = taskService.get(no);
+      if (task == null) {
+        throw new Exception("해당 작업이 없습니다.");
+      }
+      request.setAttribute("task", task);
+      request.setAttribute("project", projectService.get(task.getProjectNo()));
+      request.getRequestDispatcher("/task/detail.jsp").include(request, response);
+
+    } catch (Exception e) {
+      request.setAttribute("exception", e);
+      request.getRequestDispatcher("/error.jsp").forward(request, response);
+    }
+=======
     PrintWriter out = response.getWriter();
 
     out.println("<!DOCTYPE html>");
@@ -97,5 +119,6 @@ public class TaskDetailServlet extends HttpServlet {
 
     out.println("</body>");
     out.println("</html>");
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
   }
 }

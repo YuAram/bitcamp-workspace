@@ -1,14 +1,11 @@
 package com.eomcs.pms.web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import com.eomcs.pms.domain.Member;
 
 @WebServlet("/auth/loginUser")
 public class LoginUserServlet extends HttpServlet {
@@ -18,10 +15,10 @@ public class LoginUserServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    HttpSession session = request.getSession();
-
-    // 클라이언트로 데이터를 출력할 때 사용할 스트림 준비
     response.setContentType("text/html;charset=UTF-8");
+<<<<<<< HEAD
+    request.getRequestDispatcher("/auth/loginUser.jsp").include(request, response);
+=======
     PrintWriter out = response.getWriter();
 
     out.println("<!DOCTYPE html>");
@@ -46,5 +43,6 @@ public class LoginUserServlet extends HttpServlet {
     out.printf("등록일: %s<br>\n", member.getRegisteredDate());
 
     out.println("</body></html>");
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
   }
 }

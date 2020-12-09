@@ -1,7 +1,10 @@
 package com.eomcs.pms.web;
 
 import java.io.IOException;
+<<<<<<< HEAD
+=======
 import java.io.PrintWriter;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import java.util.HashMap;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -10,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.service.ProjectService;
 
@@ -27,27 +29,23 @@ public class ProjectListServlet extends HttpServlet {
         (ProjectService) ctx.getAttribute("projectService");
 
     response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
-
-    out.println("<!DOCTYPE html>");
-    out.println("<html>");
-    out.println("<head>");
-    out.println("<title>프로젝트목록</title></head>");
-    out.println("<body>");
 
     request.getRequestDispatcher("/header").include(request, response);
 
     try {
-      out.println("<h1>프로젝트 목록</h1>");
-
-      out.println("<a href='form'>새 프로젝트</a><br>");
-
       List<Project> list = null;
 
+<<<<<<< HEAD
+=======
+      List<Project> list = null;
+
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
       String keyword = request.getParameter("keyword");
       String keywordTitle = request.getParameter("keywordTitle");
       String keywordOwner = request.getParameter("keywordOwner");
       String keywordMember = request.getParameter("keywordMember");
+<<<<<<< HEAD
+=======
 
       if (keyword != null) {
         list = projectService.list(keyword);
@@ -63,18 +61,20 @@ public class ProjectListServlet extends HttpServlet {
       } else {
         list = projectService.list();
       }
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 
-      out.println("<table border='1'>");
-      out.println("<thead><tr>"
-          + "<th>번호</th>"
-          + "<th>프로젝트명</th>"
-          + "<th>시작일 ~ 종료일</th>"
-          + "<th>관리자</th>"
-          + "<th>팀원</th>"
-          + "</tr></thead>");
+      if (keyword != null) {
+        list = projectService.list(keyword);
 
-      out.println("<tbody>");
+      } else if (keywordTitle != null) {
+        HashMap<String,Object> keywordMap = new HashMap<>();
+        keywordMap.put("title", keywordTitle);
+        keywordMap.put("owner", keywordOwner);
+        keywordMap.put("member", keywordMember);
 
+<<<<<<< HEAD
+        list = projectService.list(keywordMap);
+=======
       for (Project project : list) {
         if (project.getState() == 0) continue;
 
@@ -85,25 +85,20 @@ public class ProjectListServlet extends HttpServlet {
           }
           members.append(member.getName());
         }
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 
-        out.printf("<tr>"
-            + "<td>%d</td>"
-            + "<td><a href='detail?no=%1$d'>%s</a></td>"
-            + "<td>%s ~ %s</td>"
-            + "<td>%s</td>"
-            + "<td>%s</td>"
-            + "</tr>\n",
-            project.getNo(),
-            project.getTitle(),
-            project.getStartDate(),
-            project.getEndDate(),
-            project.getOwner().getName(),
-            members.toString());
+      } else {
+        list = projectService.list();
       }
 
-      out.println("</tbody>");
-      out.println("</table>");
+      request.setAttribute("list", list);
+      request.getRequestDispatcher("/project/list.jsp").include(request, response);
 
+<<<<<<< HEAD
+    } catch (Exception e) {
+      request.setAttribute("exception", e);
+      request.getRequestDispatcher("/error.jsp").forward(request, response);
+=======
       out.println("<p>");
       out.println("<form action='list' method='get'>");
       out.printf("검색어: <input type='text' name='keyword' value='%s'>\n",
@@ -130,9 +125,7 @@ public class ProjectListServlet extends HttpServlet {
       request.setAttribute("exception", e);
       request.getRequestDispatcher("/error").forward(request, response);
       return;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
     }
-
-    out.println("</body>");
-    out.println("</html>");
   }
 }

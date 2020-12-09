@@ -1,15 +1,21 @@
 package com.eomcs.pms.web;
 
 import java.io.IOException;
+<<<<<<< HEAD
+=======
 import java.io.PrintWriter;
 import java.util.List;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+<<<<<<< HEAD
+=======
 import com.eomcs.pms.domain.Task;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import com.eomcs.pms.service.TaskService;
 
 @WebServlet("/task/list")
@@ -23,6 +29,16 @@ public class TaskListServlet extends HttpServlet {
     ServletContext ctx = request.getServletContext();
     TaskService taskService = (TaskService) ctx.getAttribute("taskService");
 
+<<<<<<< HEAD
+    try {
+      int projectNo = Integer.parseInt(request.getParameter("no"));
+      request.setAttribute("tasks", taskService.listByProject(projectNo));
+
+    } catch (Exception e) {
+      request.setAttribute("exception", e);
+    }
+    request.getRequestDispatcher("/task/list.jsp").include(request, response);
+=======
     PrintWriter out = response.getWriter();
 
     try {
@@ -78,5 +94,6 @@ public class TaskListServlet extends HttpServlet {
       default:
         return "준비";
     }
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
   }
 }

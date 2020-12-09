@@ -1,7 +1,10 @@
 package com.eomcs.pms.web;
 
 import java.io.IOException;
+<<<<<<< HEAD
+=======
 import java.io.PrintWriter;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -25,6 +28,8 @@ public class MemberListServlet extends HttpServlet {
         (MemberService) ctx.getAttribute("memberService");
 
     response.setContentType("text/html;charset=UTF-8");
+<<<<<<< HEAD
+=======
     PrintWriter out = response.getWriter();
 
     out.println("<!DOCTYPE html>");
@@ -34,12 +39,16 @@ public class MemberListServlet extends HttpServlet {
 
     request.getRequestDispatcher("/header").include(request, response);
 
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
     try {
-      out.println("<h1>회원 목록</h1>");
-
-      out.println("<a href='form.html'>새 회원</a><br>");
-
       List<Member> list = memberService.list();
+<<<<<<< HEAD
+      request.setAttribute("list", list);
+      request.getRequestDispatcher("/member/list.jsp").include(request, response);
+    } catch (Exception e) {
+      request.setAttribute("exception", e);
+      request.getRequestDispatcher("/error.jsp").forward(request, response);
+=======
 
       out.println("<table border='1'>");
       out.println("<thead><tr>" // table row
@@ -74,9 +83,7 @@ public class MemberListServlet extends HttpServlet {
       request.setAttribute("exception", e);
       request.getRequestDispatcher("/error").forward(request, response);
       return;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
     }
-
-    out.println("</body>");
-    out.println("</html>");
   }
 }

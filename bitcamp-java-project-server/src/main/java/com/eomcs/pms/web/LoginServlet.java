@@ -1,7 +1,10 @@
 package com.eomcs.pms.web;
 
 import java.io.IOException;
+<<<<<<< HEAD
+=======
 import java.io.PrintWriter;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,6 +38,10 @@ public class LoginServlet extends HttpServlet {
     }
 
     response.setContentType("text/html;charset=UTF-8");
+<<<<<<< HEAD
+    request.setAttribute("email", email);
+    request.getRequestDispatcher("/auth/form.jsp").include(request, response);
+=======
     PrintWriter out = response.getWriter();
 
     out.println("<!DOCTYPE html>");
@@ -53,6 +60,7 @@ public class LoginServlet extends HttpServlet {
     out.println("</form>");
     out.println("</body>");
     out.println("</html>");
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
   }
 
   @Override
@@ -64,20 +72,19 @@ public class LoginServlet extends HttpServlet {
 
     // 클라이언트로 데이터를 출력할 때 사용할 스트림 준비
     response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
-
-    out.println("<!DOCTYPE html>");
-    out.println("<html>");
-    out.println("<head><title>로그인</title></head>");
-    out.println("<body>");
 
     try {
-      out.println("<h1>로그인</h1>");
-
       // 클라이언트가 보낸 데이터를 꺼낸다.
       String email = request.getParameter("email");
       String password = request.getParameter("password");
 
+<<<<<<< HEAD
+=======
+      // 클라이언트가 보낸 데이터를 꺼낸다.
+      String email = request.getParameter("email");
+      String password = request.getParameter("password");
+
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
       // 클라이언트에게 보낼 email 쿠키를 준비한다.
       Cookie emailCookie = new Cookie("email", email);
 
@@ -91,6 +98,32 @@ public class LoginServlet extends HttpServlet {
         emailCookie.setMaxAge(60 * 60 * 24 * 7);
       } else {
         emailCookie.setMaxAge(0); // 유효기간이 0이면 삭제하라는 의미다.
+<<<<<<< HEAD
+      }
+
+      // 응답헤더에 email 쿠키를 포함시킨다.
+      response.addCookie(emailCookie);
+
+      // 서블릿이 로그인 작업에 사용할 도구를 준비한다.
+      ServletContext ctx = request.getServletContext();
+      MemberService memberService = (MemberService) ctx.getAttribute("memberService");
+
+      Member member = memberService.get(email, password);
+      if (member == null) {
+        request.getRequestDispatcher("/auth/loginError.jsp").include(request, response);
+        return;
+      } else {
+        session.setAttribute("loginUser", member);
+        response.sendRedirect("../index.html");
+        return;
+      }
+
+    } catch (Exception e) {
+      request.setAttribute("exception", e);
+      request.getRequestDispatcher("/error.jsp").forward(request, response);
+      return;
+    }
+=======
       }
 
       // 응답헤더에 email 쿠키를 포함시킨다.
@@ -133,5 +166,6 @@ public class LoginServlet extends HttpServlet {
 
     response.setHeader("Refresh", "1;url=../index.html");
 
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
   }
 }

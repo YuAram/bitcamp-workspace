@@ -1,8 +1,11 @@
 package com.eomcs.pms.web;
 
 import java.io.IOException;
+<<<<<<< HEAD
+=======
 import java.io.PrintWriter;
 import java.io.StringWriter;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
 import java.sql.Date;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -29,6 +32,20 @@ public class TaskAddServlet extends HttpServlet {
         (ProjectService) ctx.getAttribute("projectService");
 
     response.setContentType("text/html;charset=UTF-8");
+<<<<<<< HEAD
+
+    try {
+      // 프로젝트 번호를 가지고 프로젝트 정보를 꺼내온다.
+      Project project = projectService.get(
+          Integer.parseInt(request.getParameter("projectNo")));
+      request.setAttribute("project", project);
+      request.getRequestDispatcher("/task/form.jsp").include(request, response);
+
+    } catch (Exception e) {
+      request.setAttribute("exception", e);
+      request.getRequestDispatcher("/error.jsp").forward(request, response);
+    }
+=======
     PrintWriter out = response.getWriter();
 
     out.println("<!DOCTYPE html>");
@@ -86,6 +103,7 @@ public class TaskAddServlet extends HttpServlet {
 
     out.println("</body>");
     out.println("</html>");
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
   }
 
   @Override
@@ -113,8 +131,12 @@ public class TaskAddServlet extends HttpServlet {
 
     } catch (Exception e) {
       request.setAttribute("exception", e);
+<<<<<<< HEAD
+      request.getRequestDispatcher("/error.jsp").forward(request, response);
+=======
       request.getRequestDispatcher("/error").forward(request, response);
       return;
+>>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
     }
   }
 }
