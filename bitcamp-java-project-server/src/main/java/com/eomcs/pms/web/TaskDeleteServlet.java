@@ -26,18 +26,11 @@ public class TaskDeleteServlet extends HttpServlet {
       if (taskService.delete(no) == 0) {
         throw new Exception("해당 작업이 존재하지 않습니다.");
       }
-
-      response.sendRedirect("../project/detail?no=" +
+      request.setAttribute("redirect", "../project/detail?no=" +
           request.getParameter("projectNo"));
 
     } catch (Exception e) {
       request.setAttribute("exception", e);
-<<<<<<< HEAD
-      request.getRequestDispatcher("/error.jsp").forward(request, response);
-=======
-      request.getRequestDispatcher("/error").forward(request, response);
-      return;
->>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
     }
   }
 }

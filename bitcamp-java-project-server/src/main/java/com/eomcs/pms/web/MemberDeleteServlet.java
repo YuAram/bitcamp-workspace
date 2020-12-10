@@ -28,16 +28,10 @@ public class MemberDeleteServlet extends HttpServlet {
         throw new Exception("해당 번호의 회원이 없습니다.");
 
       }
-      response.sendRedirect("list");
+      request.setAttribute("redirect", "list");
 
     } catch (Exception e) {
       request.setAttribute("exception", e);
-<<<<<<< HEAD
-      request.getRequestDispatcher("/error.jsp").forward(request, response);
-=======
-      request.getRequestDispatcher("/error").forward(request, response);
-      return;
->>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
     }
   }
 }

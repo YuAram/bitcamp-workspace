@@ -52,16 +52,10 @@ public class ProjectAddServlet extends HttpServlet {
       project.setMembers(members);
 
       projectService.add(project);
-      response.sendRedirect("list");
+      request.setAttribute("redirect","list");
 
     } catch (Exception e) {
       request.setAttribute("exception", e);
-<<<<<<< HEAD
-      request.getRequestDispatcher("/error.jsp").forward(request, response);
-=======
-      request.getRequestDispatcher("/error").forward(request, response);
-      return;
->>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
     }
   }
 }

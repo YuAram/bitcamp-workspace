@@ -26,16 +26,10 @@ public class ProjectDeleteServlet extends HttpServlet {
       if (projectService.delete(no) == 0) {
         throw new Exception("해당 프로젝트가 없습니다.");
       }
-      response.sendRedirect("list");
+      request.setAttribute("redirect","list");
 
     } catch (Exception e) {
       request.setAttribute("exception", e);
-<<<<<<< HEAD
-      request.getRequestDispatcher("/error.jsp").forward(request, response);
-=======
-      request.getRequestDispatcher("/error").forward(request, response);
-      return;
->>>>>>> 2ba770c74361a3b40d77d461b6b3d161e8ba71b4
     }
   }
 }
