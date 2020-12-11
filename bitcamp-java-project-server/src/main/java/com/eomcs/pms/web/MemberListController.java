@@ -4,25 +4,25 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
-import com.eomcs.pms.domain.Board;
-import com.eomcs.pms.service.BoardService;
+import com.eomcs.pms.domain.Member;
+import com.eomcs.pms.service.MemberService;
 
 @Controller
-public class BoardListController{
+public class MemberListController {
 
-  BoardService boardService;
+  MemberService memberService;
 
-  public BoardListController(BoardService boardService) {
-    this.boardService = boardService;
+  public MemberListController(MemberService memberService) {
+    this.memberService = memberService;
   }
 
-  @RequestMapping("/board/list")
+  @RequestMapping("/member/list")
   public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    response.setContentType("text/html;charset=UTF-8");
 
-    String keyword = request.getParameter("keyword");
-    List<Board> list = boardService.list(keyword);
+    response.setContentType("text/html;charset=UTF-8");
+    List<Member> list = memberService.list();
+
     request.setAttribute("list", list);
-    return "/board/list.jsp";
+    return "/member/list.jsp";
   }
 }
