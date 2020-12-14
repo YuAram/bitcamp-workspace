@@ -3,22 +3,24 @@ package com.eomcs.pms.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
-import com.eomcs.pms.service.BoardService;
+import com.eomcs.pms.service.MemberService;
 
 @Controller
-public class BoardDeleteController {
+public class MemberDeleteController{
 
-  BoardService boardService;
+  MemberService memberService;
 
-  public BoardDeleteController(BoardService boardService) {
-    this.boardService = boardService;
+  public MemberDeleteController(MemberService memberService) {
+    this.memberService = memberService;
   }
 
-  @RequestMapping("/board/delete")
+  @RequestMapping("/member/delete")
   public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
     int no = Integer.parseInt(request.getParameter("no"));
-    if (boardService.delete(no) == 0) {
-      throw new Exception("해당 번호의 게시글이 없습니다.");
+    if (memberService.delete(no) == 0) {
+      throw new Exception("해당 번호의 회원이 없습니다.");
+
     }
     return "redirect:list";
   }
