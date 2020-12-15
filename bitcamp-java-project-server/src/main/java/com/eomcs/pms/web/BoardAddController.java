@@ -1,8 +1,8 @@
 package com.eomcs.pms.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.service.BoardService;
@@ -18,8 +18,7 @@ public class BoardAddController {
 
   @RequestMapping("/board/add")
   public String execute(Board board, HttpSession session) throws Exception {
-
-    Member loginUser = (Member) request.getSession().getAttribute("loginUser");
+    Member loginUser = (Member) session.getAttribute("loginUser");
     board.setWriter(loginUser);
     boardService.add(board);
     return "redirect:list";

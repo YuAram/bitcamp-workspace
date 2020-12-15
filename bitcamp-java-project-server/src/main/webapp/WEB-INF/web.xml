@@ -16,9 +16,9 @@
   </filter>
   <filter-mapping>
     <filter-name>CharacterEncodingFilter</filter-name>
-    <url-pattern>/app/</url-pattern>
+    <url-pattern>/app/*</url-pattern>
   </filter-mapping>
-
+  
   <servlet>
     <servlet-name>app</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -34,7 +34,7 @@
 
   <servlet-mapping>
     <servlet-name>app</servlet-name>
-    <url-pattern>/app/</url-pattern>
+    <url-pattern>/app/*</url-pattern>
   </servlet-mapping>
-
+  
 </web-app>
